@@ -7,14 +7,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Routes for admin
+Route::middleware('checkPermission:1')->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin/dashboard');
+    });
+});
+
+// Routes for docente
+Route::middleware('checkPermission:2')->group(function () {
+    Route::get('/docente/dashboard', function () {
+        return view('admin/dashboard');
+    });
+});
+
+// Routes for estudiante
+Route::middleware('checkPermission:3')->group(function () {
+    Route::get('/estudiante/dashboard', function () {
+        return view('admin/dashboard');
+    });
 });
 
 require __DIR__.'/auth.php';
