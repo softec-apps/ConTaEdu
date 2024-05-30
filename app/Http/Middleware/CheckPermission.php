@@ -15,8 +15,13 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if (!\Auth::user() || \Auth::user() -> role != $role) {
-            return response()->json('Opps! You do not have permission to access.');
+        if (!\Auth::user()) {
+            abort(403);
+            exit;
+        }
+        else if (\Auth::user() -> role != $role) {
+            abort(401);
+            exit;
         }
 
         return $next($request);
