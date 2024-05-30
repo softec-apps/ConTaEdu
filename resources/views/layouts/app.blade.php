@@ -16,8 +16,7 @@
 
         <!-- Styles -->
         @vite([
-            'resources/css/portal.css',
-            'resources/css/app.css',
+            'resources/css/portal.css'
         ])
     </head>
 
