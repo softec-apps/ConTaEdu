@@ -14,17 +14,24 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
+        <!-- Styles -->
         @vite([
-            'resources/css/app.css',
             'resources/css/portal.css',
-            'resources/js/app.js',
-            'resources/plugins/fontawesome/js/all.min.js',
-            'resources/plugins/popper.min.js'
         ])
     </head>
 
     <body>
-        {{ $slot }}
+        @yield('main')
     </body>
+
+    <!-- Scripts -->
+    @vite([
+            'resources/plugins/popper.min.js',
+            'resources/js/bootstrap.js',
+            'resources/plugins/bootstrap/js/bootstrap.js',
+            'resources/js/app.js',
+            'resources/plugins/fontawesome/js/all.min.js',
+            'resources/plugins/chart.js/chart.min.js',
+            'resources/js/index-charts.js',
+        ])
 </html>
