@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\ManagetStudentController;
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -23,8 +25,14 @@ Route::middleware('checkPermission:1')->group(function () {
 // Routes for docente
 Route::middleware('checkPermission:2')->group(function () {
     Route::get('/docente/dashboard', function () {
-        return view('admin/dashboard');
+        return view('docente/dashboard');
     })->name('docente.dashboard');
+
+    //rutas para crear student
+    Route::get('/managetStudent/create', [ManagetStudentController::class, 'create'])->name('student.create');
+    Route::post('/managetStudent/', [ManagetStudentController::class, 'store'])->name('student.store');
+
+
 });
 
 // Routes for estudiante
