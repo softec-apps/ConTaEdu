@@ -194,16 +194,22 @@
                                 alt="user profile" /></a>
                         <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
                             <li>
-                                <a class="dropdown-item" href="account.html">Account</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="settings.html">Settings</a>
+                                <a class="dropdown-item" href="account.html">Cuenta</a>
                             </li>
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
                             <li>
-                                <a class="dropdown-item" href="login.html">Log Out</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    Cerrar sesión
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                    </a>
+                                </form>
                             </li>
                         </ul>
                     </div>
