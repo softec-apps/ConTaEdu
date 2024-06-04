@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ManagedTeacherController extends Controller
 {
@@ -12,7 +13,7 @@ class ManagedTeacherController extends Controller
      */
     public function index()
     {
-        //
+        return view('teachers.index');
     }
 
     /**
@@ -28,7 +29,20 @@ class ManagedTeacherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+            'ci' => 'required|unique:users',
+            'role' => 'required|numeric|in:1,2,3',
+        ]);
+        $user = User::create([
+            'name' => $request->name,
+            'role' => $validatedData['role'],
+            'email' => $request->email,
+            'ci' => $request->ci,
+            'password' => Hash::make($request->ci),
+        ]);
+        return redirect()->route('teachers.index');
     }
 
     /**

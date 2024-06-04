@@ -25,9 +25,8 @@ Route::middleware('checkPermission:1')->prefix('admin')->group(function () {
     Route::get('/managetTeacher/create', [ManagedTeacherController::class, 'create'])->name('student.create');
     Route::post('/managetTeacher/', [ManagedTeacherController::class, 'store'])->name('student.store');
     Route::resource('teachers', ManagedTeacherController::class);
+    Route::resource('students', ManagetStudentController::class);
 });
-
-
 
 
 // Routes for docente
