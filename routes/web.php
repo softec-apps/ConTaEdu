@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ManagetStudentController;
+use App\Http\Controllers\ManagetExerciseController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -30,15 +31,26 @@ Route::middleware('checkPermission:1')->prefix('admin')->group(function () {
 
 
 // Routes for docente
-Route::middleware('checkPermission:2')->group(function () {
-    Route::get('/docente/dashboard', function () {
+Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
+    Route::get('/dashboard', function () {
         return view('docente/dashboard');
     })->name('docente.dashboard');
 
     //rutas para crear student
     Route::get('/managetStudent/create', [ManagetStudentController::class, 'create'])->name('student.create');
-    Route::post('/managetStudent/', [ManagetStudentController::class, 'store'])->name('student.store');
+    Route::post('/managetStudent', [ManagetStudentController::class, 'store'])->name('student.store');
+    Route::get('/managetStudent/index', [ManagetStudentController::class, 'index'])->name('student.index');
+    Route::get('/managetStudent/{id}/edit', [ManagetStudentController::class, 'edit'])->name('student.edit');
+    Route::put('/managetStudent/{id}', [ManagetStudentController::class, 'update'])->name('student.update');
+    Route::delete('/manageStudent/{id}', [ManagetStudentController::class, 'destroy'])->name('student.destroy');
 
+    //rutas para crear ejercicios
+    Route::get('/managetExercises/create', [ManagetExerciseController::class, 'create'])->name('exercise.create');
+    Route::post('/managetExercises', [ManagetExerciseController::class, 'store'])->name('exercise.store');
+    Route::get('/managetExercises/index', [ManagetExerciseController::class, 'index'])->name('exercise.index');
+    Route::get('/managetExercises/{id}/edit', [ManagetExerciseController::class, 'edit'])->name('exercise.edit');
+    Route::put('/managetExercises/{id}', [ManagetExerciseController::class, 'update'])->name('exercise.update');
+    Route::delete('/manageExercises/{id}', [ManagetExerciseController::class, 'destroy'])->name('exercise.destroy');
 
 });
 
@@ -49,4 +61,4 @@ Route::middleware('checkPermission:3')->group(function () {
     })->name('estudiante.dashboard');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
