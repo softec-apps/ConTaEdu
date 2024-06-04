@@ -1,0 +1,124 @@
+<x-app-layout>
+  @section('main')
+    <x-layouts.dashboard>
+      <link
+        href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap5.min.css"
+        rel="stylesheet">
+      <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+      <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
+      </script>
+      <script
+        src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap5.min.js">
+      </script>
+
+      <div class="app-wrapper">
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+          <div class="container-xl">
+            @if ($message = Session::get('success'))
+              <div class="alert alert-success">
+                <p>{{ $message }}</p>
+              </div>
+            @endif
+
+            <div class="row g-3 mb-4 align-items-center justify-content-between">
+              <div class="col-auto">
+                <h1 class="app-page-title mb-0">Estudiantes Registrados</h1>
+              </div>
+            </div>
+
+            <div class="tab-content" id="users-table-tab-content">
+              <div class="tab-pane fade show active" id="users-all"
+                role="tabpanel" aria-labelledby="users-all-tab">
+                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                  <div class="app-card-body">
+                    <table id="usersTable"
+                      class="table table-striped table-bordered"
+                      style="width:100%">
+                      <thead>
+                        <tr>
+                          <th>Cedula</th>
+                          <th>Nombre y Apellido</th>
+                          <th>Email</th>
+                          <th>Inscrito</th>
+                          <th>Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Aquí se cargarán los datos del DataTable -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        $(document).ready(function() {
+          $('#usersTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('student.index') }}",
+            columns: [{
+                data: 'ci',
+                name: 'ci'
+              },
+              {
+                data: 'name',
+                name: 'name'
+              },
+              {
+                data: 'email',
+                name: 'email'
+              },
+              {
+                data: 'created_at',
+                name: 'created_at'
+              },
+              {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false,
+                className: 'text-center'
+              }
+            ],
+            language: {
+              url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+            },
+            pageLength: 10,
+            order: [
+              [3, 'desc']
+            ],
+            responsive: true,
+            autoWidth: false,
+            columnDefs: [{
+                width: '15%',
+                targets: 0
+              },
+              {
+                width: '30%',
+                targets: 1
+              },
+              {
+                width: '25%',
+                targets: 2
+              },
+              {
+                width: '15%',
+                targets: 3
+              },
+              {
+                width: '15%',
+                targets: 4
+              }
+            ]
+          });
+        });
+
+      </script>
+    </x-layouts.dashboard>
+  @endsection
+</x-app-layout>
