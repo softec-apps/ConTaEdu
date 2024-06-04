@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ManagedTeacherController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,11 +18,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // Routes for admin
-Route::middleware('checkPermission:1')->group(function () {
-    Route::get('/admin/dashboard', function () {
+Route::middleware('checkPermission:1')->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
         return view('admin/dashboard');
     })->name('admin.dashboard');
+
+    Route::get('/managetTeacher/create', [ManagedTeacherController::class, 'create'])->name('student.create');
+    Route::post('/managetTeacher/', [ManagedTeacherController::class, 'store'])->name('student.store');
+    Route::resource('teachers', ManagedTeacherController::class);
+    Route::resource('students', ManagetStudentController::class);
 });
+
 
 // Routes for docente
 Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
