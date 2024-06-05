@@ -11,7 +11,7 @@
                     <div class="app-card alert alert-dismissible shadow-sm mb-4 border-left-decoration" role="alert">
                         <div class="inner">
                             <div class="app-card-body p-3 p-lg-4">
-                                <h3 class="mb-3">Welcome, developer!</h3>
+                                <h3 class="mb-3">Welcome, azazdeveloper!</h3>
                                 <div class="row gx-5 gy-3">
                                     <div class="col-12 col-lg-9">
                                         <div>
@@ -34,7 +34,7 @@
                                                 <path d="M9.5 3V0L14 4.5h-3A1.5 1.5 0 0 1 9.5 3z" />
                                                 <path fill-rule="evenodd"
                                                     d="M8 6a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 10.293V6.5A.5.5 0 0 1 8 6z" />
-                                            </svg>Free Download</a>
+                                            </svg>Freeasxa Download</a>
                                     </div>
                                     <!--//col-->
                                 </div>
