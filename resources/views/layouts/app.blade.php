@@ -13,28 +13,16 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-       
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        
+
         <!-- Styles -->
         @vite([
-            'resources/css/portal.css'
+            'resources/css/app.css',
+            'resources/js/app.js',
         ])
     </head>
 
     <body>
         @yield('main')
-      
+        @yield('scripts')
     </body>
-
-    <!-- Scripts -->
-    @vite([
-            'resources/plugins/popper.min.js',
-            'resources/js/bootstrap.js',
-            'resources/plugins/bootstrap/js/bootstrap.js',
-            'resources/js/app.js',
-            'resources/plugins/fontawesome/js/all.min.js',
-            'resources/plugins/chart.js/chart.min.js',
-            'resources/js/index-charts.js',
-        ])
 </html>

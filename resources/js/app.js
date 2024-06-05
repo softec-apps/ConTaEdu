@@ -1,3 +1,26 @@
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
+import * as bootstrap from 'bootstrap'
+
+import 'jszip';
+import 'pdfmake';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+import './dataTables';
+
+import '../plugins/chart.js/chart.min.js';
+import './index-charts.js';
+
+import Alpine from 'alpinejs';
+
+window.Alpine = Alpine;
+
+Alpine.start();
+
+
 'use strict';
 
 /* ===== Enable Bootstrap Popover (on element  ====== */

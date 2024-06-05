@@ -10,6 +10,9 @@ use App\Http\Controllers\ManagetExerciseController;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+Route::get('/datatable', function () {
+    return view('datatable');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -58,7 +61,7 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
 // Routes for estudiante
 Route::middleware('checkPermission:3')->group(function () {
     Route::get('/estudiante/dashboard', function () {
-        return view('admin/dashboard');
+        return view('estudiante/dashboard');
     })->name('estudiante.dashboard');
 });
 
