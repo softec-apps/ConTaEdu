@@ -25,7 +25,7 @@
 
                                     <div class="col-auto">
                                         <div class="card-header-action">
-                                            <a href="#" data-toggle="modal" data-target="#settingsModal">Agregar</a>
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">Agregar</a>
                                         </div>
                                     </div>
                                     <!--//col-->
