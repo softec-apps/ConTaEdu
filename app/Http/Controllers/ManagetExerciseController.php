@@ -15,9 +15,10 @@ class ManagetExerciseController extends Controller
      */
     public function index()
     {
-        return view('docente.manageExercises.index');
-    }
+        $exercises = Exercise::getAllExercises();
 
+        return view('docente.manageExercises.index', ['exercises' => $exercises]);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -38,15 +39,16 @@ class ManagetExerciseController extends Controller
 
         $exercise->save();
 
-        return view('docente.manageExercises.index');
+        return redirect()->route('exercise.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Exercise $exercise)
+    public function show($id)
     {
-        //
+        $exercise = Exercise::getExerciseById($id);
+        return view('docente.manageExercises.show', ['exercise' => $exercise]);
     }
 
     /**
