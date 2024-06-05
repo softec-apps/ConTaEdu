@@ -64,9 +64,23 @@ class ManagedTeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:users,email,' . $id, // Updated unique validation
+            'ci' => 'required|unique:users,ci,' . $id, // Updated unique validation
+            'role' => 'required|numeric|in:1,2,3',
+        ]);
+
+        $teacher = User::find($id);
+
+        if ($teacher) {
+            $teacher->update($validatedData); // Update teacher attributes
+            return redirect()->route('teachers.index'); // Redirect after successful update
+        } else {
+            return back()->withErrors(['message' => 'Teacher not found']);
+        }
     }
 
     /**
