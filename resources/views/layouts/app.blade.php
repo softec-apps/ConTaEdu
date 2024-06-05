@@ -16,22 +16,13 @@
 
         <!-- Styles -->
         @vite([
-            'resources/css/portal.css'
+            'resources/css/app.css',
+            'resources/js/app.js',
         ])
     </head>
 
     <body>
         @yield('main')
+        @yield('scripts')
     </body>
-
-    <!-- Scripts -->
-    @vite([
-            'resources/plugins/popper.min.js',
-            'resources/js/bootstrap.js',
-            'resources/plugins/bootstrap/js/bootstrap.js',
-            'resources/js/app.js',
-            'resources/plugins/fontawesome/js/all.min.js',
-            'resources/plugins/chart.js/chart.min.js',
-            'resources/js/index-charts.js',
-        ])
 </html>
