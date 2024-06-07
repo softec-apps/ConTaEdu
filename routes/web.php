@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ManagetStudentController;
 use App\Http\Controllers\ManagetExerciseController;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -43,6 +44,22 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::get('/managetStudent/create', [ManagetStudentController::class, 'create'])->name('student.create');
     Route::post('/managetStudent', [ManagetStudentController::class, 'store'])->name('student.store');
     Route::get('/managetStudent/index', [ManagetStudentController::class, 'index'])->name('student.index');
+    Route::get('/students', function () {
+        return response()->json(["data" => array_map(function () {
+            return [
+                'ci' => Str::random(8),
+                'name' => fake()->name(),
+                'email' => fake()->unique()->safeEmail(),
+                'created_at' => now()->subDays(rand(0, 365))->format('Y-m-d H:i:s'),
+                'test' => fake()->name(),
+                'test2' => fake()->name(),
+                'test3' => fake()->name(),
+            ];
+        }, range(1, 100)),
+        "recordsTotal" => 2,
+        "recordsFiltered" => 2,
+        ]);
+    })->name('docente.students');
     Route::get('/managetStudent/{id}/edit', [ManagetStudentController::class, 'edit'])->name('student.edit');
     Route::put('/managetStudent/{id}', [ManagetStudentController::class, 'update'])->name('student.update');
     Route::delete('/manageStudent/{id}', [ManagetStudentController::class, 'destroy'])->name('student.destroy');
