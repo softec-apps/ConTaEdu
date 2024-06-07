@@ -26,7 +26,7 @@
                       </form>
 
                     </div>
-                    <div class="col-auto">
+                    {{-- <div class="col-auto">
 
                       <select class="form-select w-auto">
                         <option selected="" value="option-1">All</option>
@@ -37,8 +37,22 @@
                         <option value="option-6">Zip file</option>
 
                       </select>
-                    </div>
+                    </div> --}}
                     <div class="col-auto">
+                      <a class="btn app-btn-primary" href="#"
+                        data-bs-toggle="modal" data-bs-target="#modalRegister">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16"
+                          class="bi bi-file-earmark-plus me-2" fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M8 6a.5.5 0 0 1 .5.5V8h1.5a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V9H6a.5.5 0 0 1 0-1h1.5V6.5A.5.5 0 0 1 8 6z" />
+                          <path
+                            d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zM13.5 4H9a1 1 0 0 1-1-1V.5L13.5 4z" />
+                        </svg>
+                        Crear Ejercicio
+                      </a>
+                    </div>
+                    {{-- <div class="col-auto">
                       <a class="btn app-btn-primary" href="#"><svg
                           width="1em" height="1em" viewBox="0 0 16 16"
                           class="bi bi-upload me-2" fill="currentColor"
@@ -48,7 +62,7 @@
                           <path fill-rule="evenodd"
                             d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z" />
                         </svg>Upload File</a>
-                    </div>
+                    </div> --}}
                   </div>
                 </div>
               </div>
@@ -94,3 +108,4 @@
     </x-layouts.dashboard>
   @endsection
 </x-app-layout>
+<x-modal-register />

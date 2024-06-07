@@ -6,26 +6,18 @@ use App\Http\Requests\ManageStudentRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Yajra\DataTables\Facades\DataTables;
 
 class ManagetStudentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index()
     {
-        // $students = User::where('role', 3)->get();
-        // return view('docente.manageStudent.index', ['students' => $students]);
-
         if (request()->ajax()) {
             return datatables()->of(User::where('role', 3)->get())
-                ->addColumn('action', function ($data) {
-                    $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Editar</button>';
-                    $button .= '&nbsp;&nbsp;';
-                    $button .= '<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Eliminar</button>';
-                    return $button;
-                })
-                ->rawColumns(['action'])
                 ->make(true);
         }
         return view('docente.manageStudent.index');
