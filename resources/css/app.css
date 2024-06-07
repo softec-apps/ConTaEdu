@@ -3,10 +3,16 @@
 /* @import 'tailwindcss/utilities'; */
 @import '../plugins/fontawesome/css/all.min.css';
 @import './loader.css';
+@import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+@import 'datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 .dt-search {
     display: flex;
     align-items: center;
+}
+.dt-search input {
+    border: 1px solid #004ba1;
 }
 .dt-paging {
     display: flex;
