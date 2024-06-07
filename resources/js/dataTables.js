@@ -9,29 +9,22 @@ import 'datatables.net-responsive-bs5';
 DataTable.Buttons.defaults.dom.button.className = 'btn app-btn-secondary';
 
 
-function setDataTableConfig(customButtons = []) {
-    return {
+function setDataTableConfig(options = {}, customButtons = []) {
+    const finalConfig = {
         columnDefs: [
             { targets: 'exclude-view', visible: false }
         ],
-        initComplete: function() {
-            // Mostrar la tabla después de que DataTables se haya inicializado
-            $(this).removeClass('d-none');
-            // Eliminar loader
-            $('.loader-container').remove();
-            // Agregar la clase personalizada de pagination
-            $('.dt-paging').addClass('app-pagination mt-2');
-            // Redimensionar las columnas para que sean responsive
-            var table = $(this).DataTable();
-            table.responsive.recalc();
-        },
         language: {
+            // loadingRecords: `<div class="loader-container">
+            //     <div class="loader"></div>
+            //     <div class="loader-text">Cargando...</div>
+            // </div>`,
             lengthMenu: "<div class=\"d-flex align-items-center\"><select class=\"form-select\">" +
                 "<option value=\"10\">10</option>" +
                 "<option value=\"20\">20</option>" +
                 "<option value=\"30\">30</option>" +
                 "<option value=\"-1\">Todo</option>" +
-            "</select><div class=\"ms-2\">resultados</div></div>",
+                "</select><div class=\"ms-2\">resultados</div></div>",
             zeroRecords: "No hay coincidencias",
             emptyTable: "No existen registros",
             paginate: {
@@ -43,7 +36,9 @@ function setDataTableConfig(customButtons = []) {
         },
         pagingType: 'simple_numbers',
         responsive: true,
-        dom: `<"row"<"col-sm-4 col-lg-2"l><"col-sm-8 col-lg-5"f><"col-sm-12 col-lg-5"B>>rtp`,
+        autoWidth: true,
+        searching: true,
+        dom: `<"row my-3"<"col-sm-4 col-lg-3"l><"col-sm-8 col-lg-4"f><"col-sm-12 col-lg-5"B>>rtp`,
         buttons: [
             {
                 extend: 'copy',
@@ -80,22 +75,75 @@ function setDataTableConfig(customButtons = []) {
                     },
                 ]
             },
-            customButtons
             // {
             //     text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
             //     className: 'ms-3 btn bg-success text-white'
             // },
-        ]
+        ],
+        initComplete: function (settings, json) {
+            // Mostrar la tabla después de que DataTables se haya inicializado
+            $(this).removeClass('d-none');
+            // Eliminar loader
+            $('.loader-container').remove();
+            // Agregar la clase personalizada de pagination
+            $('.dt-paging').addClass('app-pagination mt-2');
+            // Redimensionar las columnas para que sean responsive
+            var table = $(this).DataTable();
+            table.responsive.recalc();
+        },
     };
+
+    if (options) {
+        Object.assign(finalConfig, options);
+    }
+
+    if (options) {
+        Object.keys(customButtons).forEach(key => {
+            finalConfig.buttons.push(customButtons[key]);
+        });
+    }
+
+    return finalConfig;
 }
 
 
-$('#myTable').DataTable(setDataTableConfig(
-    [
-        {
-            text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
-            className: 'btn bg-success text-white',
-            // Aquí link de redirection y funciones
-        },
-    ]
-));
+// >>> Tabla de ejemplo
+// >>> Definir la tabla en la sección scripts de la plantilla
+// >>> Configurar de esta manera las tablas llamando a la función definida.
+// >>> Escribir las opciones extra de consulta (ajax) etc
+// >>> Segundo parámetro, botones personalizados
+
+// $('#usersTable').DataTable(setDataTableConfig(
+//     {
+//         processing: true,
+//         ajax: {
+//             url: "http://localhost/SoftecApps/ConTaEdu/public/docente/students",
+//             // SI NO FUNCIONA NORMALMENTE AGREGAR ESTE CONTENIDO
+//             // dataSrc: function(json) {
+//             //     return json.data; // Ensure this matches the structure you return from the server
+//             // },
+//             // dataFilter: function(data){
+//             //     var json = JSON.parse( data );
+//             //     return JSON.stringify( json ); // return JSON string
+//             // },
+//             // error: function(xhr, error, thrown) {
+//             //     console.error("AJAX error:", error);
+//             // }
+//         },
+//         columns: [
+//             { data: 'ci' },
+//             { data: 'name' },
+//             { data: 'email' },
+//             { data: 'created_at' },
+//         ],
+//     },
+//     [
+//         {
+//             text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
+//             className: 'btn bg-success text-white',
+//             // Aquí link de redirection y funciones
+//         },
+//     ],
+// ));
+
+window.setDataTableConfig = setDataTableConfig;
