@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ManagetStudentController;
 use App\Http\Controllers\ManagetExerciseController;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect()->route('login');

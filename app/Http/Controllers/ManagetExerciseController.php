@@ -54,24 +54,33 @@ class ManagetExerciseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Exercise $exercise)
+    public function edit($id)
     {
-        //
+        $exercise = Exercise::getExerciseById($id);
+        return view('docente.manageExercises.edit', ['exercise' => $exercise]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Exercise $exercise)
+    public function update(ManagetExerciseRequest $request, $id)
     {
-        //
+        $exercise = Exercise::getExerciseById($id);
+        $exercise->desc = $request->desc;
+        $exercise->docente_id = auth()->user()->id;
+
+        $exercise->save();
+        return redirect()->route('exercise.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Exercise $exercise)
+    public function destroy($id)
     {
-        //
+        $exercise = Exercise::getExerciseById($id);
+        $exercise->delete();
+
+        return redirect()->route('exercise.index');
     }
 }

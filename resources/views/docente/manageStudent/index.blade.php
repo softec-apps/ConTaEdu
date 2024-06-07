@@ -1,8 +1,11 @@
-<x-app-layout>
+{{-- <x-app-layout>
   @section('main')
   <x-layouts.dashboard>
     <!-- <link
         href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap5.min.css"
+        rel="stylesheet">
+      <link
+        href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.bootstrap5.min.css"
         rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
       <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
@@ -80,5 +83,40 @@
       ));
     });
   </script>
+  @endsection
+</x-app-layout> --}}
+
+
+<x-app-layout>
+  <x-slot name="title">Tablero</x-slot>
+  @section('main')
+    <x-layouts.dashboard>
+      <div class="app-wrapper">
+        <div class="app-content pt-3 p-md-3 p-lg-4">
+          <div class="container-xl">
+            <h1 class="app-page-title">Estudiantes Registrados</h1>
+            <div class="app-card app-card-orders-table mb-5">
+              <div class="app-card-body">
+                <div class="table-responsive">
+                  <x-loader></x-loader>
+                  <table class="table mb-0 text-left" id="myTable"
+                    style="width: 100%;">
+                    <thead>
+                      <tr>
+                        <th>CI</th>
+                        <th>Nombre y Apellido</th>
+                        <th>Email</th>
+                        <th>Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div><!--//table-responsive-->
+              </div><!--//app-card-body-->
+            </div><!--//app-card-->
+          </div><!--//container-fluid-->
+        </div><!--//app-content-->
+      </div><!--//app-wrapper-->
+    </x-layouts.dashboard>
   @endsection
 </x-app-layout>
