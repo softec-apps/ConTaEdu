@@ -2,7 +2,7 @@
 // window.$ = window.jQuery = $;
 
 // import * as bootstrap from 'bootstrap'
-// import 'bootstrap/js/dist/modal.js';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 // import 'jszip';
 // import 'pdfmake';
@@ -39,13 +39,13 @@ const alerts = [...alertList].map(element => new bootstrap.Alert(element))
 
 
 /* ===== Responsive Sidepanel ====== */
-const sidePanelToggler = document.getElementById('sidepanel-toggler'); 
-const sidePanel = document.getElementById('app-sidepanel');  
-const sidePanelDrop = document.getElementById('sidepanel-drop'); 
-const sidePanelClose = document.getElementById('sidepanel-close'); 
+const sidePanelToggler = document.getElementById('sidepanel-toggler');
+const sidePanel = document.getElementById('app-sidepanel');
+const sidePanelDrop = document.getElementById('sidepanel-drop');
+const sidePanelClose = document.getElementById('sidepanel-close');
 
 window.addEventListener('load', function(){
-	responsiveSidePanel(); 
+	responsiveSidePanel();
 });
 
 window.addEventListener('resize', function(){
