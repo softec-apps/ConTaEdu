@@ -1,17 +1,14 @@
-import $ from 'jquery';
-window.$ = window.jQuery = $;
+// import $ from 'jquery';
+// window.$ = window.jQuery = $;
 
-import * as bootstrap from 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import * as bootstrap from 'bootstrap'
+// import 'bootstrap/js/dist/modal.js';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import '@fortawesome/fontawesome-free/js/all.min.js';
-
-import 'jszip';
-import 'pdfmake';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// import 'jszip';
+// import 'pdfmake';
+// import pdfMake from 'pdfmake/build/pdfmake';
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 import './dataTables';
 
