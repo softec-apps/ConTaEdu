@@ -1,12 +1,13 @@
 <!-- resources/views/modal.blade.php -->
-<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+<div class="modal fade" id="miModal" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="settingsModalLabel">Registro de datos</h5>
+                <h5 class="modal-title" id="miModalLabel">Registro sde datos</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                
                 <div class="app-card app-card-settings shadow-sm p-4">
                     <div class="app-card-body">
                         <form id="settings-form" class="settings-form">

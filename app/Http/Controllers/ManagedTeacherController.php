@@ -13,6 +13,10 @@ class ManagedTeacherController extends Controller
      */
     public function index()
     {
+        if (request()->ajax()) {
+            return datatables()->of(User::where('role', 1)->get())
+                ->make(true);
+        }
         return view('teachers.index');
     }
 
