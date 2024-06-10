@@ -1,12 +1,11 @@
-import $ from 'jquery';
-import DataTable from 'datatables.net-bs5';
-import 'datatables.net-buttons-bs5';
-import 'datatables.net-buttons/js/buttons.html5.mjs';
-import 'datatables.net-buttons/js/buttons.print.mjs';
-import 'datatables.net-responsive-bs5';
+// import DataTable from 'datatables.net-bs5';
+// import 'datatables.net-buttons-bs5';
+// import 'datatables.net-buttons/js/buttons.html5.mjs';
+// import 'datatables.net-buttons/js/buttons.print.mjs';
+// import 'datatables.net-responsive-bs5';
 
 // Modify the default style for buttons
-DataTable.Buttons.defaults.dom.button.className = 'btn app-btn-secondary';
+DataTable.Buttons.defaults.dom.button.className = 'dt-button btn app-btn-secondary mx-1 mb-1';
 
 
 function setDataTableConfig(options = {}, customButtons = []) {
@@ -19,6 +18,7 @@ function setDataTableConfig(options = {}, customButtons = []) {
             //     <div class="loader"></div>
             //     <div class="loader-text">Cargando...</div>
             // </div>`,
+            url: 'https://cdn.datatables.net/plug-ins/2.0.8/i18n/es-MX.json',
             lengthMenu: "<div class=\"d-flex align-items-center\"><select class=\"form-select\">" +
                 "<option value=\"10\">10</option>" +
                 "<option value=\"20\">20</option>" +
@@ -57,11 +57,12 @@ function setDataTableConfig(options = {}, customButtons = []) {
             {
                 extend: 'collection',
                 text: 'Exportar',
-                className: 'mx-3',
+                // className: 'mx-3',
                 buttons: [
                     {
                         extend: 'pdf',
                         text: '<i class="fa-solid fa-file-pdf"></i> PDF',
+                        // className: 'd-flex',
                         exportOptions: {
                             columns: ":not(.exclude)",
                         },
@@ -73,7 +74,7 @@ function setDataTableConfig(options = {}, customButtons = []) {
                             columns: ":not(.exclude)",
                         },
                     },
-                ]
+                ],
             },
             // {
             //     text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
@@ -87,9 +88,6 @@ function setDataTableConfig(options = {}, customButtons = []) {
             $('.loader-container').remove();
             // Agregar la clase personalizada de pagination
             $('.dt-paging').addClass('app-pagination mt-2');
-            // Redimensionar las columnas para que sean responsive
-            var table = $(this).DataTable();
-            table.responsive.recalc();
         },
     };
 
