@@ -23,6 +23,12 @@ class ManagetStudentController extends Controller
         return view('docente.manageStudent.index');
     }
 
+    // public function index()
+    // {
+    //     $users = User::where('role', 3)->get();
+    //     return view('docente.manageStudent.index', ['users' => $users]);
+    // }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -51,32 +57,48 @@ class ManagetStudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($id)
     {
-        //
+        $student = User::find($id);
+
+        if ($student) {
+            return response()->json([
+                'ci' => $student->ci,
+                'name' => $student->name,
+                'email' => $student->email,
+            ]);
+        } else {
+            return response()->json(['error' => 'Student not found'], 404);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
-        //
+        $user = User::getUsersById($id);
+        return view('docente.manageStudent.edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::getUsersById($id);
+        // Aquí se actualizarían los datos del usuario con los datos del $request
+        // $user->update($request->all());
+        return redirect()->route('docente.manageStudent.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        //
+        $user = User::getUsersById($id);
+        $user->delete();
+        return redirect()->route('docente.manageStudent.index');
     }
 }

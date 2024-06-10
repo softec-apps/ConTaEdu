@@ -47,4 +47,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static function getAllUsers()
+    {
+        return User::all();
+    }
+
+    public static function getUsersById($id)
+    {
+        return User::find($id);
+    }
 }
