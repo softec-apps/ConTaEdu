@@ -21,12 +21,16 @@ class ManageStudentRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'ci' => ['required', 'string', 'max:13', 'unique:users,ci'],
+        $rules = [
+            'ci' => ['required', 'string', 'max:13', 'unique:users,ci,' . $this->route('id')],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['string', 'min:8', 'confirmed'],
-
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $this->route('id')],
         ];
+
+        if ($this->input('password')) {
+            $rules['password'] = ['string', 'min:8', 'confirmed'];
+        }
+
+        return $rules;
     }
 }

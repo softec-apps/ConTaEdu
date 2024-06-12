@@ -8,7 +8,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"
           aria-label="Close"></button>
       </div>
-      <form id="formEditar" action="{{ route('student.edit', $id) }}" >
+      <form id="formEditar" action="" method="POST">
         @csrf
         @method('PUT')
         <div class="modal-body">

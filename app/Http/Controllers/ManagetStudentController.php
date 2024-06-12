@@ -78,18 +78,21 @@ class ManagetStudentController extends Controller
     public function edit($id)
     {
         $user = User::getUsersById($id);
-        return view('docente.manageStudent.edit', ['user' => $user]);
+        return view('docente.manageStudent.edit', ['user' => $user, 'id' => $id]);
     }
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(ManageStudentRequest $request, $id)
     {
-        $user = User::getUsersById($id);
-        // Aquí se actualizarían los datos del usuario con los datos del $request
-        // $user->update($request->all());
-        return redirect()->route('docente.manageStudent.index');
+        $user = User::find($id);
+
+        if ($user) {
+            $user->fill($request->validated());
+            $user->save();
+        }
+
+        return redirect()->route('student.index');
     }
 
     /**
@@ -99,6 +102,6 @@ class ManagetStudentController extends Controller
     {
         $user = User::getUsersById($id);
         $user->delete();
-        return redirect()->route('docente.manageStudent.index');
+        return response()->json(['success' => true]);
     }
 }
