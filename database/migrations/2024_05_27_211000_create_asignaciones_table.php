@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE'); // Foreign Key
             $table->foreignId('ejercicio_id');
             $table->foreign('ejercicio_id')->references('id')->on('ejercicios')->onDelete('CASCADE')->onUpdate('CASCADE'); // Foreign Key
-            $table->float('nota')->nullable();
+            $table->float('grade')->nullable();
+            $table->boolean('viewed')->default(false);
+            $table->boolean('sent')->default(false);
             $table->timestamps();
         });
     }

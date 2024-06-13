@@ -1,5 +1,5 @@
 @props([
-    'viewed' => true,
+    'viewed' => false,
     'calificado' => false,
     'role' => 'docente',
     'exercise' => null, // Aseguramos que la variable $exercise esté definida
@@ -12,7 +12,7 @@
         <i class="fa-solid fa-file-invoice-dollar"></i>
       </span>
 
-      @if ($viewed)
+      @if (!$viewed)
         <span class="badge bg-success">NEW</span>
       @endif
 
