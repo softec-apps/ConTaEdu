@@ -12,11 +12,17 @@
     align-items: center;
 }
 .dt-search input {
-    border: 1px solid #adadad;
+    border: 1px solid var(--bs-secondary);
 }
 .dt-paging {
     display: flex;
     justify-content: center;
+}
+
+.error-msg {
+    color: var(--bs-red);
+    list-style: none;
+    padding-left: 1em;
 }
 
 /*!
