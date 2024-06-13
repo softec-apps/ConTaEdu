@@ -14,9 +14,32 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create()
     {
+        // return view('auth.login');
+        if (Auth::check()) {
+            return self::redirectTo(Auth::user()->role);
+        }
         return view('auth.login');
+    }
+
+    /**
+     * Private function with the redirection logic
+     */
+    private function redirectTo($role): RedirectResponse
+    {
+        // Check user rol to redirection
+        switch ($role)
+        {
+            case 1:
+                return redirect()->intended(route('admin.dashboard', absolute: false));
+            case 2:
+                return redirect()->intended(route('docente.dashboard', absolute: false));
+            case 3:
+                return redirect()->intended(route('estudiante.dashboard', absolute: false));
+            default:
+                return redirect()->intended(route('login'));
+        }
     }
 
     /**
@@ -28,18 +51,18 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Check user rol to redirection
-        switch ($request->user()->role)
-        {
-            case 1:
-                return redirect()->intended(route('admin.dashboard', absolute: false));
-            case 2:
-                return redirect()->intended(route('docente.dashboard', absolute: false));
-            case 3:
-                return redirect()->intended(route('estudiante.dashboard', absolute: false));
-            default:
-                return redirect()->route('login');
+        return self::redirectTo($request->user()->role);
+    }
+
+    /**
+     * Check an authenticated session.
+     */
+    public function redirectIfAuthenticated(Request $request): RedirectResponse
+    {
+        if (Auth::guard('web')->check()) {
+            return self::redirectTo(Auth::user()->role);
         }
+        return redirect()->route('login');
     }
 
     /**
