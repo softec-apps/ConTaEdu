@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Estudiante\StudentDashboardController;
 use App\Http\Controllers\ManagedTeacherController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -10,9 +11,6 @@ use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
-Route::get('/datatable', function () {
-    return view('datatable');
 });
 
 Route::middleware('auth')->group(function () {
@@ -78,9 +76,8 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
 
 // Routes for estudiante
 Route::middleware('checkPermission:3')->group(function () {
-    Route::get('/estudiante/dashboard', function () {
-        return view('estudiante/dashboard');
-    })->name('estudiante.dashboard');
+    Route::get('/estudiante/dashboard', [StudentDashboardController::class, 'index'])->name('estudiante.dashboard');
+    // Route::post('/search_exercise', [StudentDashboardController::class, 'searchExercise'])->name('estudiante.search_exercise');
 });
 
 require __DIR__ . '/auth.php';
