@@ -95,7 +95,7 @@ function setDataTableConfig(options = {}, customButtons = []) {
         Object.assign(finalConfig, options);
     }
 
-    if (options) {
+    if (customButtons) {
         Object.keys(customButtons).forEach(key => {
             finalConfig.buttons.push(customButtons[key]);
         });
@@ -139,7 +139,9 @@ function setDataTableConfig(options = {}, customButtons = []) {
 //         {
 //             text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
 //             className: 'btn bg-success text-white',
-//             // Aquí link de redirection y funciones
+//             action: function () {
+//                 $('#modalName').modal('show');
+//             }
 //         },
 //     ],
 // ));
