@@ -29,8 +29,30 @@ class Exercise extends Model
         return self::findOrFail($id);
     }
 
-    public function user()
+    public static function getByCode($code)
     {
-        return $this->belongsTo(User::class, 'docente_id');
+        return self::where('access_code', $code)->firstOrFail();
+    }
+
+    public function asignaciones()
+    {
+        return $this->hasMany(Assignments::class, 'ejercicio_id');
+    }
+
+    public static function getAllByEstudianteId($id, $sent = null, $graded = null)
+    {
+        return self::whereHas('asignaciones', function ($query) use ($id, $graded) {
+            $query->where('estudiante_id', $id);
+            if (isset($sent)) {
+                $query->where('sent', $sent);
+            }
+            if (isset($graded)) {
+                if ($graded) {
+                    $query->whereNotNull('nota');
+                } else {
+                    $query->whereNull('nota');
+                }
+            }
+        })->get();
     }
 }
