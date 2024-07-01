@@ -12,6 +12,7 @@ class Exercise extends Model
     protected $table = 'ejercicios';
 
     protected $fillable = [
+        'titulo',
         'desc',
         'docente_id',
         'access_code',
@@ -26,5 +27,10 @@ class Exercise extends Model
     public static function getExerciseById($id)
     {
         return self::findOrFail($id);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'docente_id');
     }
 }

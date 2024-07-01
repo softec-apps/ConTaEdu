@@ -22,6 +22,10 @@
           action="{{ route('exercise.store') }}">
           @csrf
           <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input class="form-control" id="titulo" name="titulo" required></input>
+          </div>
+          <div class="mb-3">
             <label for="desc" class="form-label">Descripción</label>
             <textarea class="form-control" id="desc" name="desc" required
               cols="30" rows="5" style="width: 100%; height: 100%;"></textarea>

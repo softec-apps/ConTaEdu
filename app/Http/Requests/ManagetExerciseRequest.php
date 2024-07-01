@@ -22,6 +22,7 @@ class ManagetExerciseRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'titulo' => ['required', 'string', 'max:255'],
             'desc' => ['required', 'string',],
             // 'docente_id' => ['required', 'integer'],
             // 'access_code' => ['required', 'string', 'max:6'],

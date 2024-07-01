@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ejercicios', function (Blueprint $table) {
             $table->id();
+            $table->string('titulo');
             $table->text('desc');
             $table->foreignId('docente_id');
             $table->foreign('docente_id')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE'); // Foreign Key

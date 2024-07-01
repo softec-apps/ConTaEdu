@@ -48,13 +48,17 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::get('/manageStudent/{id}', [ManagetStudentController::class, 'show'])->name('student.show');
 
     //rutas para crear ejercicios
-    Route::get('/managetExercises/create', [ManagetExerciseController::class, 'create'])->name('exercise.create');
-    Route::post('/managetExercises', [ManagetExerciseController::class, 'store'])->name('exercise.store');
-    Route::get('/managetExercises/index', [ManagetExerciseController::class, 'index'])->name('exercise.index');
-    Route::get('/managetExercises/{id}/edit', [ManagetExerciseController::class, 'edit'])->name('exercise.edit');
-    Route::put('/managetExercises/{id}', [ManagetExerciseController::class, 'update'])->name('exercise.update');
+    Route::get('/manageExercises/create', [ManagetExerciseController::class, 'create'])->name('exercise.create');
+    Route::post('/manageExercises', [ManagetExerciseController::class, 'store'])->name('exercise.store');
+    Route::get('/manageExercises/index', [ManagetExerciseController::class, 'index'])->name('exercise.index');
+    Route::get('/manageExercises/{id}/edit', [ManagetExerciseController::class, 'edit'])->name('exercise.edit');
+    Route::put('/manageExercises/{id}', [ManagetExerciseController::class, 'update'])->name('exercise.update');
     Route::delete('/manageExercises/{id}', [ManagetExerciseController::class, 'destroy'])->name('exercise.destroy');
-    Route::get('/managetExercises/{id}', [ManagetExerciseController::class, 'show'])->name('exercise.show');
+    Route::get('/manageExercises/{id}', [ManagetExerciseController::class, 'show'])->name('exercise.show');
+    Route::post('/manageExercises/{id}/view', [ManagetExerciseController::class, 'updateViewed'])->name('managetExercises.view');
+    Route::get('/docente/manageExercises/search', [ManagetExerciseController::class, 'search'])->name('exercise.search');
+    // Route::get('/manageExercises/{page}', 'ManageExerciseController@indexp')->name('exercises.index');
+
 });
 
 // Routes for estudiante
