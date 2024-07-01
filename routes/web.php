@@ -45,7 +45,7 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::get('/managetStudent/{id}/edit', [ManagetStudentController::class, 'edit'])->name('student.edit');
     Route::put('/managetStudent/{id}', [ManagetStudentController::class, 'update'])->name('student.update');
     Route::delete('/manageStudent/{id}', [ManagetStudentController::class, 'destroy'])->name('student.destroy');
-    Route::get('/managetStudent/{id}', [ManagetStudentController::class, 'show'])->name('student.show');
+    Route::get('/manageStudent/{id}', [ManagetStudentController::class, 'show'])->name('student.show');
 
     //rutas para crear ejercicios
     Route::get('/managetExercises/create', [ManagetExerciseController::class, 'create'])->name('exercise.create');
