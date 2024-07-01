@@ -34,9 +34,11 @@ class Exercise extends Model
         return self::where('access_code', $code)->firstOrFail();
     }
 
+    // Internal method to get the user's assignments
+    // Don't erase it
     public function asignaciones()
     {
-        return $this->hasMany(Assignments::class, 'ejercicio_id');
+        return $this->hasMany(Assignment::class, 'ejercicio_id');
     }
 
     public static function getAllByEstudianteId($id, $sent = null, $graded = null)
@@ -48,9 +50,9 @@ class Exercise extends Model
             }
             if (isset($graded)) {
                 if ($graded) {
-                    $query->whereNotNull('nota');
+                    $query->whereNotNull('grade');
                 } else {
-                    $query->whereNull('nota');
+                    $query->whereNull('grade');
                 }
             }
         })->get();

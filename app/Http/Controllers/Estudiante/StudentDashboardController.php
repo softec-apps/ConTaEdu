@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Estudiante;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Exercise;
-use App\Models\Assignments;
+use App\Models\Assignment;
 
 class StudentDashboardController extends Controller
 {
@@ -67,7 +67,7 @@ class StudentDashboardController extends Controller
                 throw new \Exception('Código no encontrado');
             }
 
-            $newJoin = Assignments::newAssignment($exerciseFound->id, \Auth::id());
+            $newJoin = Assignment::newAssignment($exerciseFound->id, \Auth::id());
             if (!$newJoin) {
                 throw new \Exception('No se pudo unir al ejercicio');
             }
