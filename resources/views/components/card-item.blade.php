@@ -21,12 +21,16 @@
     <div class="app-card-body p-3 has-card-actions">
       <h4 class="app-doc-title truncate mb-0">
         <a href="#file-link">
-          {{ $title ?? 'Doc' }}
+          {{ $exercise->titulo ?? 'Título del Ejercicio' }}
         </a>
       </h4>
       <div class="app-doc-meta">
         <ul class="list-unstyled mb-0">
-          <li><span class="text-muted">Autor:</span> {{ $autor ?? 'Docente' }}
+          <li><span class="text-muted">Autor:</span>
+            {{ $exercise->user->name ?? 'Anónimo' }}</li>
+          </li>
+          <li><span class="text-muted">código:</span>
+            {{ $exercise->access_code ?? 'error al obtener el código' }}</li>
           </li>
           <li><span class="text-muted">Subido:</span>
             {{ $created_at ?? '--/--/----' }}</li>
@@ -50,6 +54,19 @@
               </svg>
             </div>
             <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                  data-bs-target="#codeModal{{ $exercise->id }}"
+                  data-access-code="{{ $exercise->access_code ?? 'error al obtener el código' }}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                    height="1em" fill="currentColor" class="bi bi-lock me-2"
+                    viewBox="0 0 16 16">
+                    <path
+                      d="M8 1a2.5 2.5 0 0 1 2.5 2.5V6h-5v-.5A2.5 2.5 0 0 1 8 1zm3 6H5v6h6V7zm-1 1a1 1 0 1 0-2 0v1h2V8z" />
+                  </svg>
+                  Ver Código
+                </a>
+              </li>
               <li>
                 <a class="dropdown-item" href="#" data-bs-toggle="modal"
                   data-bs-target="#viewModal{{ $exercise->id }}"
@@ -112,6 +129,10 @@
 
 <!-- Incluir el componente del modal -->
 <x-modal-editar :id="$exercise->id" :desc="$exercise->desc" />
+
+<!-- Incluir el componente del modal -->
+<x-ejercicio.modal-code id="codeModal{{ $exercise->id }}"
+  title="Código de Acceso" :content="$exercise->access_code ?? 'No hay codigo disponible'" />
 
 <script>
   $('#viewModal').on('show.bs.modal', function(event) {
