@@ -27,7 +27,7 @@
                 role="tabpanel" aria-labelledby="users-all-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                   <div class="app-card-body">
-                    <x-loader />
+                    {{-- <x-loader /> --}}
                     <table id="usersTable"
                       class="table table-striped table-bordered d-none"
                       style="width:100%">

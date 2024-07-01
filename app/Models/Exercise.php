@@ -12,6 +12,7 @@ class Exercise extends Model
     protected $table = 'ejercicios';
 
     protected $fillable = [
+        'titulo',
         'desc',
         'docente_id',
         'access_code',
