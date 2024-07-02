@@ -16,7 +16,8 @@ class CheckPermission
     public function handle(Request $request, Closure $next, $role): Response
     {
         if (\Auth::check()) {
-            if (\Auth::user() -> role != $role) {
+            $user = \Auth::user();
+            if ($user->role != $role || !$user->est) {
                 abort(401);
                 exit;
             }
