@@ -12,12 +12,15 @@ class ModalEditar extends Component
     public $id;
     public $desc;
 
+    public $titulo;
+
     /**
      * Create a new component instance.
      */
-    public function __construct($id, $desc)
+    public function __construct($id, $titulo, $desc)
     {
         $this->id = $id;
+        $this->titulo = $titulo;
         $this->desc = $desc;
     }
 

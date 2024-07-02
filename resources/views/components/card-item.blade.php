@@ -128,11 +128,14 @@
   title="Detalle del Ejercicio" :content="$exercise->desc ?? 'No hay descripción disponible'" />
 
 <!-- Incluir el componente del modal -->
-<x-modal-editar :id="$exercise->id" :desc="$exercise->desc" />
+<x-modal-editar :id="$exercise->id" :desc="$exercise->desc" :titulo="$exercise->titulo" />
 
 <!-- Incluir el componente del modal -->
 <x-ejercicio.modal-code id="codeModal{{ $exercise->id }}"
   title="Código de Acceso" :content="$exercise->access_code ?? 'No hay codigo disponible'" />
+
+<!-- Incluir el componente para registrar la calificacion-->
+
 
 <script>
   $('#viewModal').on('show.bs.modal', function(event) {
