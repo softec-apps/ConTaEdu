@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Estudiante\StudentDashboardController;
-use App\Http\Controllers\ManagedTeacherController;
+use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,11 +25,17 @@ Route::middleware('checkPermission:1')->prefix('admin')->group(function () {
         return view('admin/dashboard');
     })->name('admin.dashboard');
 
-    Route::get('/managetTeacher/create', [ManagedTeacherController::class, 'create'])->name('student.create');
-    Route::post('/managetTeacher/', [ManagedTeacherController::class, 'store'])->name('student.store');
-    Route::resource('teachers', ManagedTeacherController::class);
-    Route::resource('students', ManagetStudentController::class);
+
+    Route::get('/managetuser/create', [ManageUsersController::class, 'create'])->name('users.create');
+
+    Route::get('/', [ManageUsersController::class, 'index'])->name('users.index');
+    Route::get('/getUsers/{id}', [ManageUsersController::class, 'getUsers'])->name('users.getUsers');
+    Route::post('/managetUser/', [ManageUsersController::class, 'store'])->name('users.store');
+    Route::post('/', [ManageUsersController::class, 'store'])->name('users.store');
+    Route::post('/userest/{id}', [ManageUsersController::class, 'estado'])->name('users.est');
+    Route::put('/{id}', [ManageUsersController::class, 'update'])->name('users.update');
 });
+
 
 
 // Routes for docente
