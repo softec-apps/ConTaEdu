@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Incluir dinámicamente todos los archivos en app/Helpers
+        foreach (glob(app_path('Helpers') . '/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 }
