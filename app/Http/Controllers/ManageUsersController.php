@@ -6,18 +6,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ManagedTeacherController extends Controller
+class ManageUsersController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (request()->ajax()) {
-            return datatables()->of(User::where('role', 1)->get())
-                ->make(true);
+        return view('admin.users.index');
+    }
+    
+    public function getUsers($id, Request $request)
+    {
+        if ($request->ajax()) {
+            $data = User::where('role', $id)->get();
+            return datatables()->of($data)->make(true);
         }
-        return view('teachers.index');
     }
 
     /**
@@ -46,7 +50,7 @@ class ManagedTeacherController extends Controller
             'ci' => $request->ci,
             'password' => Hash::make($request->ci),
         ]);
-        return redirect()->route('teachers.index');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -72,16 +76,14 @@ class ManagedTeacherController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email,' . $id, // Updated unique validation
-            'ci' => 'required|unique:users,ci,' . $id, // Updated unique validation
+            'email' => 'required|email|unique:users,email,' . $id,
+            'ci' => 'required|unique:users,ci,' . $id,
             'role' => 'required|numeric|in:1,2,3',
         ]);
-
         $teacher = User::find($id);
-
         if ($teacher) {
-            $teacher->update($validatedData); // Update teacher attributes
-            return redirect()->route('teachers.index'); // Redirect after successful update
+            $teacher->update($validatedData);
+            return redirect()->route('users.index');
         } else {
             return back()->withErrors(['message' => 'Teacher not found']);
         }
@@ -90,8 +92,29 @@ class ManagedTeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function estado($id)
     {
-        //
+        $teacher = User::find($id);
+        if ($teacher) {
+            $teacher->est = $teacher->est == 1 ? 0 : 1;
+            $teacher->save();
+            return response()->json(['success', true]);
+        } else {
+            return response()->json(['success', false]);
+            //return back()->withErrors(['message' => 'Teacher not found']);
+        }
+    }
+
+
+    public function destroy($id)
+    {
+        $teacher = User::find($id);
+        if ($teacher) {
+            $teacher->est = 1 ? $teacher->est = 0 : $teacher->est = 1;
+            $teacher->update($teacher);
+            return redirect()->route('users.index');
+        } else {
+            return back()->withErrors(['message' => 'Teacher not found']);
+        }
     }
 }

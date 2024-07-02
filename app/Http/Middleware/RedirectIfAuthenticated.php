@@ -19,6 +19,11 @@ class RedirectIfAuthenticated
         if (\Auth::check()) {
             $user = \Auth::user();
 
+            if (!$user->est) {
+                \Auth::logout();
+                return redirect('/');
+            }
+
             // Redirige al dashboard adecuado basado en el rol del usuario
             switch ($user->role) {
                 case 1:
