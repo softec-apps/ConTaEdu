@@ -15,11 +15,15 @@
           @method('PUT')
 
           <div class="form-group mb-3">
+            <label for="titulo{{ $id }}">Título</label>
+            <input type="text" class="form-control"
+              id="titulo{{ $id }}" name="titulo"
+              value="{{ $titulo }}">
+          </div>
+          <div class="form-group mb-3">
             <label for="desc{{ $id }}">Descripción</label>
-            <textarea  class="form-control" id="desc{{ $id }}" name="desc"
-              rows="5" cols="30"
-              style="width: 100%; height: 100%;"
-              >{{ $desc }}</textarea>
+            <textarea class="form-control" id="desc{{ $id }}" name="desc"
+              rows="5" cols="30" style="width: 100%; height: 100%;">{{ $desc }}</textarea>
           </div>
 
           <button type="submit" class="btn btn-primary">actualizar</button>

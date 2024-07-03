@@ -14,7 +14,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Styles -->
+        <!-- DataTables -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
         @vite(['resources/css/app.css'])
@@ -25,6 +25,11 @@
 
     <body>
         @yield('main')
+
+        <!-- Flash Messages -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js"></script>
+        <x-flashify::scripts />
 
         <!-- Non-critical Scripts -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js" defer></script>
@@ -47,5 +52,19 @@
         @vite(['resources/js/app.js'])
 
         @yield('scripts')
+
+
+        <!-- <script>
+            Swal.fire({
+  title: 'Error!',
+  text: 'Do you want to continue',
+  icon: 'success',
+  toast: true,
+  position: 'top-end',
+  timer: 5000,
+  timerProgressBar: true,
+  showConfirmButton: false,
+})
+        </script> -->
     </body>
 </html>
