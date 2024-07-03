@@ -71,8 +71,11 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
 // Routes for estudiante
 Route::middleware('checkPermission:3')->group(function () {
     Route::get('/estudiante/dashboard', [StudentDashboardController::class, 'index'])->name('estudiante.dashboard');
-    Route::post('/search_exercise', [StudentDashboardController::class, 'searchExercise'])->name('estudiante.search_exercise');
-    Route::post('/join_exercise', [StudentDashboardController::class, 'joinExercise'])->name('estudiante.join_exercise');
+    Route::post('/estudiante/search_exercise', [StudentDashboardController::class, 'searchExercise'])->name('estudiante.search_exercise');
+    Route::post('/estudiante/join_exercise', [StudentDashboardController::class, 'joinExercise'])->name('estudiante.join_exercise');
+    // Ver ejercicios pendientes o enviados/calificados
+    Route::get('/estudiante/ejercicios/pendientes', [StudentDashboardController::class, 'pendingExercises'])->name('estudiante.pending_exercises');
+    Route::get('estudiante/ejercicios/enviados', [StudentDashboardController::class, 'sentGradedExercises'])->name('estudiante.sent_graded_exercises');
 });
 
 require __DIR__ . '/auth.php';

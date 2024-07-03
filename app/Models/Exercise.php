@@ -38,12 +38,15 @@ class Exercise extends Model
     // Don't erase it
     public function asignaciones()
     {
-        return $this->hasMany(Assignment::class, 'ejercicio_id');
+        return $this->hasOne(Assignment::class, 'ejercicio_id');
     }
 
     public static function getAllByEstudianteId($id, $sent = null, $graded = null)
     {
-        return self::whereHas('asignaciones', function ($query) use ($id, $graded) {
+        $query = self::query();
+
+        // Apply whereHas to ensure only exercises with matching assignments are fetched
+        $query->whereHas('asignaciones', function ($query) use ($id, $sent, $graded) {
             $query->where('estudiante_id', $id);
             if (isset($sent)) {
                 $query->where('sent', $sent);
@@ -55,7 +58,24 @@ class Exercise extends Model
                     $query->whereNull('grade');
                 }
             }
-        })->get();
+        });
+
+    // Eager load the assignments with the same conditions
+        $query->with('asignaciones', function ($query) use ($id, $sent, $graded) {
+            $query->where('estudiante_id', $id);
+            if (isset($sent)) {
+                $query->where('sent', $sent);
+            }
+            if (isset($graded)) {
+                if ($graded) {
+                    $query->whereNotNull('grade');
+                } else {
+                    $query->whereNull('grade');
+                }
+            }
+        });
+
+        return $query->get();
     }
 
     public function user()
