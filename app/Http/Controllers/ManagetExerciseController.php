@@ -7,6 +7,7 @@ use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Assignment;
+use App\View\Components\Ejercicio\ModalQualification;
 
 
 class ManagetExerciseController extends Controller
@@ -118,5 +119,39 @@ class ManagetExerciseController extends Controller
         $exercises = Exercise::paginate($perPage); // Use pagination with perPage limit
 
         return view('docente.manageExercises.index', compact('exercises'));
+    }
+
+    public function getAssignedStudents($id)
+    {
+        $exercise = Exercise::getExerciseById($id);
+
+        if (!$exercise) {
+            return redirect()->route('exercise.index')->with('error', 'Ejercicio no encontrado');
+        }
+
+        $assignedStudents = Assignment::where('ejercicio_id', $id)
+            ->with('estudiante:id,name,email')
+            ->get()
+            ->pluck('estudiante')
+            ->unique('id')
+            ->values();
+
+        return view('docente.manageExercises.assigned-students', [
+            'exercise' => $exercise,
+            'assignedStudents' => $assignedStudents
+        ]);
+    }
+
+    public function saveGrades(Request $request, $exerciseId)
+    {
+        $grades = $request->input('grades');
+
+        foreach ($grades as $studentId => $grade) {
+            Assignment::where('ejercicio_id', $exerciseId)
+                ->where('estudiante_id', $studentId)
+                ->update(['grade' => $grade]);
+        }
+
+        return redirect()->back()->with('success', 'Calificaciones guardadas con éxito.');
     }
 }
