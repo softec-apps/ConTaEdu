@@ -34,10 +34,10 @@
     <div id="submenu-1" class="collapse submenu submenu-1" data-bs-parent="#menu-accordion">
         <ul class="submenu-list list-unstyled">
             <li class="submenu-item">
-                <a class="submenu-link" href="{{ route('student.create') }}">Crear</a>
+                <a class="submenu-link" href="{{ route('estudiante.pending_exercises') }}">Pendientes</a>
             </li>
             <li class="submenu-item">
-                <a class="submenu-link" href="{{ route('student.index') }}">Lista</a>
+                <a class="submenu-link" href="{{ route('estudiante.sent_graded_exercises') }}">Enviados/Calificados</a>
             </li>
         </ul>
     </div>

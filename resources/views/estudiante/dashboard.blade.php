@@ -19,8 +19,8 @@
                                 <div class="app-card app-card-stat shadow-sm h-100 bg-success">
                                     <div
                                         class="app-card-body p-3 p-lg-4 d-flex align-items-center justify-content-between">
-                                        <h4 class="text-dark">Nuevo ejercicio</h4>
-                                        <div class="stats-figure text-dark"><i class="fa-solid fa-circle-plus"></i>
+                                        <h4 class="text-white">Nuevo ejercicio</h4>
+                                        <div class="stats-figure text-white"><i class="fa-solid fa-circle-plus"></i>
                                         </div>
                                     </div>
                                     <!--//app-card-body-->
@@ -48,7 +48,11 @@
                                     <!--//app-card-header-->
                                     <div class="app-card-body p-3 p-lg-4">
                                         <div id="active-courses">
-                                            <x-loader/>
+                                            <x-loading-items :items="$pending_exercises">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <a href="{{ route('estudiante.pending_exercises') }}" class="btn btn-secondary">Ver todo</a>
+                                                </div>
+                                            </x-loading-items>
                                         </div>
                                     </div>
                                     <!--//app-card-body-->
@@ -72,7 +76,16 @@
                                     <!--//app-card-header-->
                                     <div class="app-card-body p-3 p-lg-4">
                                         <div id="active-courses">
-                                            <x-loader/>
+                                            <x-loading-items :items="$sent_graded_exercises">
+                                                <x-slot:items_code>
+                                                    @foreach ($sent_graded_exercises as $item)
+                                                        <x-card-item :exercise="$item" :calificado="true"></x-card-item>
+                                                    @endforeach
+                                                </x-slot:items_code>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <a href="{{ route('estudiante.sent_graded_exercises') }}" class="btn btn-secondary">Ver todo</a>
+                                                </div>
+                                            </x-loading-items>
                                         </div>
                                     </div>
                                     <!--//app-card-body-->
@@ -84,7 +97,7 @@
                         <!--//row-->
                     </div>
 
-                    <x-modal :name="'accessToExercise'" :size="__('sm')" :show="true" :title="__('Nuevo ejercicio')" :form="true">
+                    <x-modal :name="'accessToExercise'" :size="__('sm')" :show="false" :title="__('Nuevo ejercicio')" :form="true">
                         <div class="mb-3">
                             <x-input-label for="access-code" :value="__('Código de acceso')"/>
                             <x-text-input name="access-code" id="access-code" placeholder="XXXXXX" autocomplete="off" required minlength="6" maxlength="6"/>
