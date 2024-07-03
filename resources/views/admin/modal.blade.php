@@ -13,7 +13,7 @@
                         <form id="settings-form" class="settings-form">
                             @csrf
 
-                            <input type="text" id="id" name="id" value="{{ old('id') }}">
+                            <input type="hidden" id="id" name="id" value="{{ old('id') }}">
 
                             <div class="mb-3">
                                 <label for="setting-input-2" class="form-label">Nombres</label>

@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('plan_cuentas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('estudiante_id');
-            $table->foreign('estudiante_id')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE'); // Foreign Key
-            $table->foreignId('ejercicio_id');
-            $table->foreign('ejercicio_id')->references('id')->on('ejercicios')->onDelete('CASCADE')->onUpdate('CASCADE'); // Foreign Key
-            $table->text('file_path');
+            $table->integer('cuenta');
+            $table->string('description');
+            $table->enum('tipocuenta', ['Total' => 'T', 'Detalle' => 'D'])->default('T');
+            $table->enum('signo', ['Positivo' => 'P', 'Negativo' => 'N', 'Doble' => 'D'])->default('P');
+            $table->enum('tipoestado', ['Estado de Situacion Financiera' => 1, 'Estado de resultados integral' => 2, 'Estados de flujo de efectivo' => 3, 'Estado de cambios en el patrimonio' => 5])->default(5);
             $table->timestamps();
         });
     }
