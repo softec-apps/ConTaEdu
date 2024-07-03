@@ -64,7 +64,8 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::post('/manageExercises/{id}/view', [ManagetExerciseController::class, 'updateViewed'])->name('managetExercises.view');
     Route::get('/docente/manageExercises/search', [ManagetExerciseController::class, 'search'])->name('exercise.search');
     // Route::get('/manageExercises/{page}', 'ManageExerciseController@indexp')->name('exercises.index');
-
+    Route::get('/manageExercises/{id}/assigned-students', [ManagetExerciseController::class, 'getAssignedStudents'])->name('exercise.assigned-students');
+    Route::post('/save-grades/{exerciseId}', [ManagetExerciseController::class, 'saveGrades'])->name('exercise.save-grades');
 });
 
 // Routes for estudiante
