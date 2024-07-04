@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('cuenta');
             $table->string('description');
-            $table->enum('tipocuenta', ['Total' => 'T', 'Detalle' => 'D'])->default('T');
             $table->enum('signo', ['Positivo' => 'P', 'Negativo' => 'N', 'Doble' => 'D'])->default('P');
-            $table->enum('tipoestado', ['Estado de Situacion Financiera' => 1, 'Estado de resultados integral' => 2, 'Estados de flujo de efectivo' => 3, 'Null' => 4, 'Estado de cambios en el patrimonio' => 5])->default(5);
+            $table->enum('tipocuenta', ['Total' => 'T', 'Detalle' => 'D'])->default('T');
+            $table->enum('tipoestado', ['Estado de Situacion Financiera' => 1, 'Estado de resultados integral' => 2, 'Estados de flujo de efectivo' => 3, 'Null' => 4, 'Estado de cambios en el patrimonio' => 5])->default(4);
+            $table->boolean('est')->default(true);
             $table->timestamps();
         });
     }
