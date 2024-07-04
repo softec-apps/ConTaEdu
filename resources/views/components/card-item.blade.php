@@ -1,5 +1,5 @@
 @props([
-  'viewed' => false,
+  'viewed' => null,
   'graded' => false,
   'role' => 3, // Estudiante por defecto
   'exercise' => null, // Aseguramos que la variable $exercise esté definida
@@ -12,7 +12,18 @@
         <i class="fa-solid fa-file-invoice-dollar"></i>
       </span>
 
-      @if (!$viewed && !$exercise->asignaciones->viewed)
+      @php
+      // Comprobamos si $viewed es null, para verificar el estado en $exercise
+      if (is_null($viewed) && isset($exercise->asignaciones->viewed)) {
+        $viewed = $exercise->asignaciones->viewed;
+      }
+
+      // Si después de la verificación, $viewed sigue siendo null, lo ajustamos a false por defecto
+      if (is_null($viewed)) {
+        $viewed = false;
+      }
+      @endphp
+      @if (!$viewed)
         <span class="badge bg-success">NEW</span>
       @endif
 
@@ -33,7 +44,9 @@
             {{ $exercise->access_code ?? 'error al obtener el código' }}</li>
           </li>
           <li><span class="text-muted">Subido:</span>
-            {{ $exercise->created_at ?? '--/--/----' }}</li>
+            {{ $exercise->created_at ?? '--/--/----' }}
+          </li>
+
           @if ($graded)
             <li><span class="text-muted">Calificación:</span>
               {!! isset($exercise->asignaciones->grade) ?
