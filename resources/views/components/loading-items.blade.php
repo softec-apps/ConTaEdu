@@ -1,4 +1,7 @@
-@props(['items' => []])
+@props([
+    'items' => [],
+    'graded' => false,
+])
 
 <div x-data="{ isLoading: true, hasContent: @json(count($items) > 0) }" x-init="isLoading = false">
     <!-- Loader visible while loading -->
@@ -12,9 +15,11 @@
             @if (isset($items_code))
                 {{ $items_code }}
             @else
-                @foreach ($items as $item)
-                    <x-card-item :exercise="$item"></x-card-item>
-                @endforeach
+                <div class="row g-4">
+                    @foreach ($items as $item)
+                        <x-card-item :exercise="$item" :graded="$graded"></x-card-item>
+                    @endforeach
+                </div>
             @endif
         </div>
     </template>

@@ -41,7 +41,7 @@ class Exercise extends Model
         return $this->hasOne(Assignment::class, 'ejercicio_id');
     }
 
-    public static function getAllByEstudianteId($id, $sent = null, $graded = null)
+    public static function getAllByEstudianteId($id, $sent = null, $graded = null, $per_page = null)
     {
         $query = self::query();
 
@@ -75,6 +75,9 @@ class Exercise extends Model
             }
         });
 
+        if (isset($per_page)) {
+            return $query->paginate($per_page);
+        }
         return $query->get();
     }
 
