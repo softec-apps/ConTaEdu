@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\Estudiante\StudentDashboardController;
+use App\Http\Controllers\ManagePlanCuentasController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ManagetStudentController;
 use App\Http\Controllers\ManagetExerciseController;
-use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -27,7 +27,6 @@ Route::middleware('checkPermission:1')->prefix('admin')->group(function () {
 
 
     Route::get('/managetuser/create', [ManageUsersController::class, 'create'])->name('users.create');
-
     Route::get('/', [ManageUsersController::class, 'index'])->name('users.index');
     Route::get('/getUsers/{id}', [ManageUsersController::class, 'getUsers'])->name('users.getUsers');
     Route::post('/managetUser/', [ManageUsersController::class, 'store'])->name('users.store');
@@ -43,7 +42,10 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::get('/dashboard', function () {
         return view('docente/dashboard');
     })->name('docente.dashboard');
-
+    Route::get('/', [ManagePlanCuentasController::class, 'index'])->name('plancuentas.index');
+    Route::post('/', [ManagePlanCuentasController::class, 'store'])->name('plancuentas.store');
+    Route::post('/plancuentaest/{id}', [ManagePlanCuentasController::class, 'estado'])->name('plancuentas.est');
+    Route::put('/{id}', [ManagePlanCuentasController::class, 'update'])->name('plancuentas.update');
     //rutas para crear student
     Route::get('/managetStudent/create', [ManagetStudentController::class, 'create'])->name('student.create');
     Route::post('/managetStudent', [ManagetStudentController::class, 'store'])->name('student.store');
