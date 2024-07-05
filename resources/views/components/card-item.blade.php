@@ -1,8 +1,8 @@
 @props([
-  'viewed' => false,
-  'graded' => false,
-  'role' => 3, // Estudiante por defecto
-  'exercise' => null, // Aseguramos que la variable $exercise esté definida
+    'viewed' => false,
+    'graded' => false,
+    'role' => 3, // Estudiante por defecto
+    'exercise' => null, // Aseguramos que la variable $exercise esté definida
 ])
 
 <div class="col-6 col-md-4 col-xl-4 col-xxl-3">
@@ -12,7 +12,11 @@
         <i class="fa-solid fa-file-invoice-dollar"></i>
       </span>
 
-      @if (!$viewed && !$exercise->asignaciones->viewed)
+      @if (
+          !$viewed &&
+              !is_null($exercise) &&
+              !is_null($exercise->asignaciones) &&
+              !$exercise->asignaciones->viewed)
         <span class="badge bg-success">NEW</span>
       @endif
 
@@ -34,11 +38,11 @@
           </li>
           <li><span class="text-muted">Subido:</span>
             {{ $exercise->created_at ?? '--/--/----' }}</li>
-          @if ($graded)
+          @if ($graded || $exercise->asignaciones->grade)
             <li><span class="text-muted">Calificación:</span>
-              {!! isset($exercise->asignaciones->grade) ?
-                $exercise->asignaciones->grade . ' / 10'
-                : '<span class="badge bg-danger">Pendiente</span>' !!}</li>
+              {!! isset($exercise->asignaciones->grade)
+                  ? $exercise->asignaciones->grade . ' / 10'
+                  : '<span class="badge bg-danger">Pendiente</span>' !!}</li>
           @endif
         </ul>
       </div><!--//app-doc-meta-->

@@ -56,6 +56,8 @@
                     'nota' => $exercise->nota,
                     'role' => 2,
                     'exercise' => $exercise,
+                    'viewed' => true,
+                    'graded' => true,
                 ])
                 @endcomponent
               @endforeach
