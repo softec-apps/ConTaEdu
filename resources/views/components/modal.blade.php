@@ -12,9 +12,9 @@
 
 <div class="modal fade" id="{{ $name }}" tabindex="-1" aria-labelledby="{{ $name }}Label" aria-hidden="true"
     x-data="{
-        show: @js($show),
+        isOpen: @js($show),
         toggleModal() {
-            if (this.show) {
+            if (this.isOpen) {
                 $('#{{ $name }}').modal('show');
             } else {
                 $('#{{ $name }}').modal('hide');
@@ -22,7 +22,9 @@
         }
     }" x-init="() => {
         toggleModal();
-        $watch('show', () => toggleModal());
+        $watch('isOpen', () => toggleModal());
+        $('#{{ $name }}').on('shown.bs.modal', () => isOpen = true);
+        $('#{{ $name }}').on('hidden.bs.modal', () => isOpen = false);
     }">
     <div class="modal-dialog modal-{{ $size }}">
         <div class="modal-content">
