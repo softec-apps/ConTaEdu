@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Assignment;
 use App\View\Components\Ejercicio\ModalQualification;
+use App\Models\User;
 
 
 class ManagetExerciseController extends Controller
@@ -153,5 +154,22 @@ class ManagetExerciseController extends Controller
         }
 
         return redirect()->back()->with('success', 'Calificaciones guardadas con éxito.');
+    }
+
+    public function viewSubmission($exerciseId, $studentId)
+    {
+        $assignment = Assignment::where('ejercicio_id', $exerciseId)
+            ->where('estudiante_id', $studentId)
+            ->where('sent', true)
+            ->firstOrFail();
+
+        $exercise = Exercise::findOrFail($exerciseId);
+        $student = User::findOrFail($studentId);
+
+        return view('docente.manageExercises.view-submission', [
+            'exercise' => $exercise,
+            'student' => $student,
+            'assignment' => $assignment
+        ]);
     }
 }

@@ -38,17 +38,38 @@ class Assignment extends Model
         return $assignment->save();
     }
 
+    // public static function getStudentsAssignedToExercise($ejercicio_id)
+    // {
+    //     return self::where('ejercicio_id', $ejercicio_id)
+    //         ->pluck('estudiante_id')
+    //         ->unique()
+    //         ->values();
+    // }
+
+    // public static function getStudentsAssignedToExercise($ejercicio_id)
+    // {
+    //     return self::where('ejercicio_id', $ejercicio_id)
+    //         ->where('sent', true)
+    //         ->with('estudiante:id,name,email')
+    //         ->get();
+    // }
+
     public static function getStudentsAssignedToExercise($ejercicio_id)
     {
         return self::where('ejercicio_id', $ejercicio_id)
-            ->pluck('estudiante_id')
-            ->unique()
-            ->values();
+            ->with('estudiante:id,name,email')
+            ->get();
     }
 
     // Relación con el modelo User (estudiante)
     public function estudiante()
     {
         return $this->belongsTo(User::class, 'estudiante_id');
+    }
+
+    public function getStudentResponse()
+    {
+        // Asumiendo que guardas la respuesta en algún lugar, por ejemplo, en una columna 'response'
+        return $this->response;
     }
 }
