@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Exercise;
 
 class Assignment extends Model
 {
@@ -38,21 +39,6 @@ class Assignment extends Model
         return $assignment->save();
     }
 
-    // public static function getStudentsAssignedToExercise($ejercicio_id)
-    // {
-    //     return self::where('ejercicio_id', $ejercicio_id)
-    //         ->pluck('estudiante_id')
-    //         ->unique()
-    //         ->values();
-    // }
-
-    // public static function getStudentsAssignedToExercise($ejercicio_id)
-    // {
-    //     return self::where('ejercicio_id', $ejercicio_id)
-    //         ->where('sent', true)
-    //         ->with('estudiante:id,name,email')
-    //         ->get();
-    // }
 
     public static function getStudentsAssignedToExercise($ejercicio_id)
     {
@@ -71,5 +57,20 @@ class Assignment extends Model
     {
         // Asumiendo que guardas la respuesta en algún lugar, por ejemplo, en una columna 'response'
         return $this->response;
+    }
+
+    public static function getRelatedStudentCountForTeacher($docenteId)
+    {
+        return self::whereHas('exercise', function ($query) use ($docenteId) {
+            $query->where('docente_id', $docenteId);
+        })
+            ->select('estudiante_id')
+            ->distinct()
+            ->count();
+    }
+
+    public function exercise()
+    {
+        return $this->belongsTo(Exercise::class, 'ejercicio_id');
     }
 }

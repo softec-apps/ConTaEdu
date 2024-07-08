@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 use App\Models\Assignment;
 use App\View\Components\Ejercicio\ModalQualification;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 class ManagetExerciseController extends Controller
@@ -44,6 +46,8 @@ class ManagetExerciseController extends Controller
 
         $exercise->save();
 
+        swal()->success('Ejercicio creado', 'El ejercicio se ha guardado correctamente')->toast();
+
         return redirect()->route('exercise.index');
     }
 
@@ -71,11 +75,19 @@ class ManagetExerciseController extends Controller
     public function update(ManagetExerciseRequest $request, $id)
     {
         $exercise = Exercise::getExerciseById($id);
-        $exercise->titulo = $request->titulo;
-        $exercise->desc = $request->desc;
-        $exercise->docente_id = auth()->user()->id;
 
-        $exercise->save();
+        if ($exercise) {
+            $exercise->titulo = $request->titulo;
+            $exercise->desc = $request->desc;
+            $exercise->docente_id = auth()->user()->id;
+
+            $exercise->save();
+
+            swal()->success('Ejercicio actualizado', 'El ejercicio se ha actualizado correctamente')->toast();
+        } else {
+            swal()->error('Error', 'No se encontró el ejercicio')->toast();
+        }
+
         return redirect()->route('exercise.index');
     }
 
@@ -85,7 +97,13 @@ class ManagetExerciseController extends Controller
     public function destroy($id)
     {
         $exercise = Exercise::getExerciseById($id);
-        $exercise->delete();
+
+        if ($exercise) {
+            $exercise->delete();
+            swal()->success('Ejercicio eliminado', 'El ejercicio se ha eliminado correctamente')->toast();
+        } else {
+            swal()->error('Error', 'No se encontró el ejercicio a eliminar')->toast();
+        }
 
         return redirect()->route('exercise.index');
     }
@@ -147,13 +165,23 @@ class ManagetExerciseController extends Controller
     {
         $grades = $request->input('grades');
 
-        foreach ($grades as $studentId => $grade) {
-            Assignment::where('ejercicio_id', $exerciseId)
-                ->where('estudiante_id', $studentId)
-                ->update(['grade' => $grade]);
-        }
+        try {
+            foreach ($grades as $studentId => $grade) {
+                Assignment::where('ejercicio_id', $exerciseId)
+                    ->where('estudiante_id', $studentId)
+                    ->update(['grade' => $grade]);
+            }
 
-        return redirect()->back()->with('success', 'Calificaciones guardadas con éxito.');
+            // Añadimos la alerta toast de éxito aquí
+            swal()->success('Calificaciones guardadas', 'Las calificaciones se han guardado correctamente')->toast();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            // Alerta toast de error si ocurre algún problema
+            swal()->error('Error', 'Hubo un problema al guardar las calificaciones')->toast();
+
+            return redirect()->back();
+        }
     }
 
     public function viewSubmission($exerciseId, $studentId)
@@ -171,5 +199,64 @@ class ManagetExerciseController extends Controller
             'student' => $student,
             'assignment' => $assignment
         ]);
+    }
+
+    public function getExerciseCount()
+    {
+        $docenteId = auth()->user()->id;
+        $count = Exercise::getExerciseCountByDocente($docenteId);
+        return response()->json(['count' => $count]);
+    }
+
+    public function getGradedExerciseCount()
+    {
+        $docenteId = auth()->user()->id;
+        $count = Exercise::getGradedExerciseCountByDocente($docenteId);
+        return response()->json(['count' => $count]);
+    }
+
+    public function getRelatedStudentCount()
+    {
+        $docenteId = auth()->user()->id;
+        $count = Assignment::getRelatedStudentCountForTeacher($docenteId);
+        return response()->json(['count' => $count]);
+    }
+
+
+    public function getCreatedExercisesData(Request $request)
+    {
+        $period = $request->input('period', 'week');
+        $endDate = Carbon::now();
+        $startDate = $this->getStartDate($period);
+
+        $data = Exercise::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('COUNT(*) as exercise_count')
+        )
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        return response()->json([
+            'labels' => $data->pluck('date'),
+            'values' => $data->pluck('exercise_count')
+        ]);
+    }
+
+    private function getStartDate($period)
+    {
+        switch ($period) {
+            case 'today':
+                return Carbon::today();
+            case 'week':
+                return Carbon::now()->subWeek();
+            case 'month':
+                return Carbon::now()->subMonth();
+            case 'year':
+                return Carbon::now()->subYear();
+            default:
+                return Carbon::now()->subWeek();
+        }
     }
 }

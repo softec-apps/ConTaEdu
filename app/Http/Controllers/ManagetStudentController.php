@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\Facades\DataTables;
+use App\Models\Assignment;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ManagetStudentController extends Controller
 {
@@ -51,6 +54,8 @@ class ManagetStudentController extends Controller
 
         $student->save();
 
+        swal()->success('Éxito', 'Estudiante registrado correctamente')->toast();
+
         return view('docente.manageStudent.index');
     }
 
@@ -90,6 +95,9 @@ class ManagetStudentController extends Controller
         if ($user) {
             $user->fill($request->validated());
             $user->save();
+            swal()->success('Actualización exitosa', 'La información del estudiante ha sido actualizada')->toast();
+        } else {
+            swal()->error('Error', 'No se encontró el estudiante')->toast();
         }
 
         return redirect()->route('student.index');
@@ -103,5 +111,42 @@ class ManagetStudentController extends Controller
         $user = User::getUsersById($id);
         $user->delete();
         return response()->json(['success' => true]);
+    }
+
+    public function getProgressChartData(Request $request)
+    {
+        $period = $request->input('period', 'week');
+        $endDate = Carbon::now();
+        $startDate = $this->getStartDate($period);
+
+        $data = Assignment::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('AVG(grade) as average_grade')
+        )
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        return response()->json([
+            'labels' => $data->pluck('date'),
+            'values' => $data->pluck('average_grade')
+        ]);
+    }
+
+    private function getStartDate($period)
+    {
+        switch ($period) {
+            case 'today':
+                return Carbon::today();
+            case 'week':
+                return Carbon::now()->subWeek();
+            case 'month':
+                return Carbon::now()->subMonth();
+            case 'year':
+                return Carbon::now()->subYear();
+            default:
+                return Carbon::now()->subWeek();
+        }
     }
 }
