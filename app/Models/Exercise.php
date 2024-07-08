@@ -60,7 +60,7 @@ class Exercise extends Model
             }
         });
 
-    // Eager load the assignments with the same conditions
+        // Eager load the assignments with the same conditions
         $query->with('asignaciones', function ($query) use ($id, $sent, $graded) {
             $query->where('estudiante_id', $id);
             if (isset($sent)) {
@@ -84,5 +84,19 @@ class Exercise extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'docente_id');
+    }
+
+    public static function getExerciseCountByDocente($docenteId)
+    {
+        return self::where('docente_id', $docenteId)->count();
+    }
+
+    public static function getGradedExerciseCountByDocente($docenteId)
+    {
+        return self::where('docente_id', $docenteId)
+            ->whereHas('asignaciones', function ($query) {
+                $query->whereNotNull('grade');
+            })
+            ->count();
     }
 }
