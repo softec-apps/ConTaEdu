@@ -69,6 +69,12 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     // Route::get('/manageExercises/{page}', 'ManageExerciseController@indexp')->name('exercises.index');
     Route::get('/manageExercises/{id}/assigned-students', [ManagetExerciseController::class, 'getAssignedStudents'])->name('exercise.assigned-students');
     Route::post('/save-grades/{exerciseId}', [ManagetExerciseController::class, 'saveGrades'])->name('exercise.save-grades');
+    Route::get('/exercise/{exerciseId}/submission/{studentId}', [ManagetExerciseController::class, 'viewSubmission'])->name('exercise.view-submission');
+    Route::get('/exercise/count', [ManagetExerciseController::class, 'getExerciseCount'])->name('exercise.count');
+    Route::get('/exercise/graded-count', [ManagetExerciseController::class, 'getGradedExerciseCount'])->name('exercise.graded-count');
+    Route::get('/exercise/related-student-count', [ManagetExerciseController::class, 'getRelatedStudentCount'])->name('exercise.related-student-count');
+    Route::get('/progress-chart-data', [ManagetStudentController::class, 'getProgressChartData'])->name('student.progress-chart-data');
+    Route::get('/created-exercises-data', [ManagetExerciseController::class, 'getCreatedExercisesData']);
 });
 
 // Routes for estudiante

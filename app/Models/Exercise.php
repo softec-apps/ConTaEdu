@@ -101,4 +101,18 @@ class Exercise extends Model
     {
         return $this->belongsTo(User::class, 'docente_id');
     }
+
+    public static function getExerciseCountByDocente($docenteId)
+    {
+        return self::where('docente_id', $docenteId)->count();
+    }
+
+    public static function getGradedExerciseCountByDocente($docenteId)
+    {
+        return self::where('docente_id', $docenteId)
+            ->whereHas('asignaciones', function ($query) {
+                $query->whereNotNull('grade');
+            })
+            ->count();
+    }
 }

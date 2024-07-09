@@ -14,13 +14,20 @@ class ModalQualification extends Component
     public $exercise;
     public $assignedStudents;
 
+    // public function __construct($exerciseId)
+    // {
+    //     $this->exercise = Exercise::findOrFail($exerciseId);
+
+    //     $this->assignedStudents = Assignment::where('ejercicio_id', $exerciseId)
+    //         ->with('estudiante:id,name,email')
+    //         ->get();
+    // }
+
     public function __construct($exerciseId)
     {
         $this->exercise = Exercise::findOrFail($exerciseId);
 
-        $this->assignedStudents = Assignment::where('ejercicio_id', $exerciseId)
-            ->with('estudiante:id,name,email')
-            ->get();
+        $this->assignedStudents = Assignment::getStudentsAssignedToExercise($exerciseId);
     }
 
     public function render(): View|Closure|string

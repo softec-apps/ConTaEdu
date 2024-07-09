@@ -51,9 +51,9 @@
 
           @if ($graded)
             <li><span class="text-muted">Calificación:</span>
-              {!! isset($exercise->asignaciones->grade) ?
-                $exercise->asignaciones->grade . ' / 10'
-                : '<span class="badge bg-danger">Pendiente</span>' !!}</li>
+              {!! isset($exercise->asignaciones->grade)
+                  ? $exercise->asignaciones->grade . ' / 10'
+                  : '<span class="badge bg-danger">Pendiente</span>' !!}</li>
           @endif
         </ul>
       </div><!--//app-doc-meta-->

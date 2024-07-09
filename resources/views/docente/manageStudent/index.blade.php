@@ -14,20 +14,13 @@
               <div class="col-auto">
                 <h1 class="app-page-title mb-0">Estudiantes Registrados</h1>
               </div>
-              <div class="col-auto">
-                <button class="btn bg-success text-white" data-bs-toggle="modal"
-                  data-bs-target="#modalRegister">
-                  <i class="fa-solid fa-circle-plus"></i> Agregar
-                </button>
-              </div>
             </div>
 
             <div class="tab-content" id="users-table-tab-content">
-              <div class="tab-pane fade show active" id="users-all"
-                role="tabpanel" aria-labelledby="users-all-tab">
+              <div class="tab-pane fade show active" id="users-all" role="tabpanel"
+                aria-labelledby="users-all-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5">
                   <div class="app-card-body">
-                    {{-- <x-loader /> --}}
                     <table id="usersTable"
                       class="table table-striped table-bordered d-none"
                       style="width:100%">
@@ -80,17 +73,23 @@
               searchable: false,
               render: function(data, type, row) {
                 return `
-          <button class="btn btn-primary btn-update" data-id="${row.id}" data-ci="${row.ci}" data-name="${row.name}" data-email="${row.email}">
-              <i class="fas fa-edit"></i>
-          </button>
-          <button class="btn btn-danger btn-delete" data-id="${row.id}">
-              <i class="fas fa-trash"></i>
-          </button>
-      `;
+            <button class="btn btn-primary btn-update" data-id="${row.id}" data-ci="${row.ci}" data-name="${row.name}" data-email="${row.email}">
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-danger btn-delete" data-id="${row.id}">
+                <i class="fas fa-trash"></i>
+            </button>
+        `;
               }
             }
           ],
-        }, ));
+        }, [{
+          text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
+          className: 'btn bg-success text-white',
+          action: function() {
+            $('#modalRegister').modal('show');
+          }
+        }]));
 
         // Event listener for the update button
         $('#usersTable').on('click', '.btn-update', function() {
