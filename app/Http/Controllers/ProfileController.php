@@ -2,44 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit()
+    public function edit(Request $request): View
     {
         return view('profile.edit', [
-            'user' => Auth::user(),
+            'user' => $request->user(),
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
-        $request->validate([
+        $user = $request->user();
+
+        $validated = $request->validateWithBag('update', [
             'ci' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . Auth::id()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
         ]);
 
-        Auth::user()->update($request->only('ci', 'name', 'email'));
+        $user->fill($validated);
 
-        return redirect()->route('profile.edit')->with('status', 'profile-updated');
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
+
+        // Agregar notificación SweetAlert
+        swal()->success('Perfil Actualizado', 'Tu información ha sido actualizada correctamente')->toast();
+
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
-    /**
-     * Delete the user's account.
-     */
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -54,6 +57,9 @@ class ProfileController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Agregar notificación SweetAlert
+        swal()->success('Cuenta Eliminada', 'Tu cuenta ha sido eliminada correctamente')->toast();
 
         return Redirect::to('/');
     }
