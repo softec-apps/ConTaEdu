@@ -27,7 +27,9 @@
         <span class="badge bg-success">NEW</span>
       @endif
 
-      <a class="app-card-link-mask" href="#file-link"></a>
+      @if ($role == 3)
+        <a class="app-card-link-mask" href="{{ route('estudiante.see_exercise', $exercise->id) }}"></a>
+      @endif
     </div>
     <div class="app-card-body p-3 has-card-actions">
       <h4 class="app-doc-title truncate mb-0">

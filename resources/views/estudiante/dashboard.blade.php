@@ -27,8 +27,7 @@
                                         </div>
                                     </div>
                                     <!--//app-card-body-->
-                                    <!-- <a class="app-card-link-mask" href="#" data-bs-toggle="modal" data-bs-target="#accessToExercise"></a> -->
-                                    <a class="app-card-link-mask" href="#" @click="showAccessModal = !showAccessModal"></a>
+                                    <a class="app-card-link-mask" href="#" data-bs-toggle="modal" data-bs-target="#accessToExercise"></a>
                                 </div>
                                 <!--//app-card-->
                             </div>

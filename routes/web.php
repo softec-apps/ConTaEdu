@@ -4,6 +4,7 @@ use App\Http\Controllers\Estudiante\StudentDashboardController;
 use App\Http\Controllers\ManagePlanCuentasController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Estudiante\SolveExerciseController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ManagetStudentController;
@@ -77,7 +78,19 @@ Route::middleware('checkPermission:3')->group(function () {
     Route::post('/estudiante/join_exercise', [StudentDashboardController::class, 'joinExercise'])->name('estudiante.join_exercise');
     // Ver ejercicios pendientes o enviados/calificados
     Route::get('/estudiante/ejercicios/pendientes', [StudentDashboardController::class, 'pendingExercises'])->name('estudiante.pending_exercises');
+    Route::get('/estudiante/ejercicios/pendientes/search', [StudentDashboardController::class, 'searchPending'])->name('estudiante.search_pending');
+
     Route::get('estudiante/ejercicios/enviados', [StudentDashboardController::class, 'sentGradedExercises'])->name('estudiante.sent_graded_exercises');
+    Route::get('/estudiante/ejercicios/enviados/search', [StudentDashboardController::class, 'searchSent'])->name('estudiante.search_sent');
+
+    // Search cuenta de plan de cuentas
+    Route::get('/estudiante/plan_cuentas/search', [ManagePlanCuentasController::class, 'search'])->name('plancuentas.search');
+
+    // Ver y resolver el ejercicio
+    Route::get('/estudiante/ejercicio/{id}', [SolveExerciseController::class, 'index'])->name('estudiante.see_exercise');
+    Route::post('/estudiante/ejercicio/{id}/asiento/create', [SolveExerciseController::class, 'store'])->name('estudiante.new_asiento');
+    Route::get('/estudiante/asiento/detalle-row', [SolveExerciseController::class, 'new_detalle_asiento_contable'])->name('estudiante.new_detalle_asiento');
+    Route::get('/estudiante/ejercicio/{id}/send', [SolveExerciseController::class, 'sendExercise'])->name('estudiante.send_exercise');
 });
 
 require __DIR__ . '/auth.php';

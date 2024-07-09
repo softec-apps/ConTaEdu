@@ -13,17 +13,17 @@ class StudentDashboardController extends Controller
     {
         $perPage = 4;
 
-        $total_exercises = Exercise::getAllByEstudianteId(\Auth::id());
-        $exercises_sent = Exercise::getAllByEstudianteId(\Auth::id(), true);
-        $graded_exercises = Exercise::getAllByEstudianteId(\Auth::id(), null, true);
+        $total_exercises = Exercise::getAllByEstudianteId(\Auth::id())->count();
+        $exercises_sent = Exercise::getAllByEstudianteId(\Auth::id(), true)->get();
+        $graded_exercises = Exercise::getAllByEstudianteId(\Auth::id(), null, true)->get();
         $data = [
             'stats' => [
-                'total_exercises' => $total_exercises->count(),
+                'total_exercises' => $total_exercises,
                 'exercises_sent' => $exercises_sent->count(),
                 'graded_exercises' => $graded_exercises->count()
             ],
-            'pending_exercises' => Exercise::getAllByEstudianteId(\Auth::id(), false, false)->splice(0, $perPage),
-            'sent_graded_exercises' => $exercises_sent->merge($graded_exercises)->unique('id')->values()->splice(0, $perPage),
+            'pending_exercises' => Exercise::getAllByEstudianteId(\Auth::id(), false, false)->take($perPage)->get(),
+            'sent_graded_exercises' => $exercises_sent->merge($graded_exercises)->unique('id')->values()->take($perPage),
         ];
         return view('estudiante.dashboard', $data);
     }
@@ -71,13 +71,17 @@ class StudentDashboardController extends Controller
 
             $newJoin = Assignment::newAssignment($exerciseFound->id, \Auth::id());
             if (!$newJoin) {
+                swal()->error(null, 'Ya se unió al ejercicio')->toast();
                 throw new \Exception('No se pudo unir al ejercicio');
             }
 
+            swal()->success(null, 'Se unió correctamente al ejercicio')->toast();
             return redirect()->route('estudiante.dashboard');
         } catch (\Illuminate\Validation\ValidationException $e) {
+            swal()->error(null, 'Código no encontrado')->toast();
             return redirect()->route('estudiante.dashboard')->with('error', $e->errors());
         } catch (\Exception $e) {
+            swal()->error(null, 'No se pudo unir al ejercicio')->toast();
             return redirect()->route('estudiante.dashboard')->with('error', $e->getMessage());
         }
     }
@@ -92,6 +96,19 @@ class StudentDashboardController extends Controller
         return view('estudiante.pending_exercises', $data);
     }
 
+    public function searchPending(Request $request)
+    {
+        $searchTerm = $request->input('searchdocs');
+        $perPage = 8;
+        $exercises = Exercise::getAllByEstudianteId(\Auth::id(), false, null, $perPage,
+            function($query) use ($searchTerm) {
+                $query->where('titulo', 'like', '%' . $searchTerm . '%');
+            }
+        );
+
+        return view('estudiante.pending_exercises', compact('exercises'));
+    }
+
 
     public function sentGradedExercises()
     {
@@ -100,5 +117,18 @@ class StudentDashboardController extends Controller
             'exercises' => Exercise::getAllByEstudianteId(\Auth::id(), true, null, $perPage),
         ];
         return view('estudiante.sent_graded_exercises', $data);
+    }
+
+    public function searchSent(Request $request)
+    {
+        $searchTerm = $request->input('searchdocs');
+        $perPage = 8;
+        $exercises = Exercise::getAllByEstudianteId(\Auth::id(), true, null, $perPage,
+            function($query) use ($searchTerm) {
+                $query->where('titulo', 'like', '%' . $searchTerm . '%');
+            }
+        );
+
+        return view('estudiante.sent_graded_exercises', compact('exercises'));
     }
 }

@@ -152,4 +152,39 @@ class ManagePlanCuentasController extends Controller
             return back()->withErrors(['message' => 'model not found']);
         }
     }
+
+
+    public function search(Request $request)
+    {
+        $search = $request->input('q'); // Select2 usa 'q' por defecto para el término de búsqueda
+        $page = $request->input('page', 1); // Para paginación
+        $perPage = 10; // Número de resultados por página
+
+        $query = PlanCuentas::where('cuenta', 'like', '%' . $search . '%')
+                            ->orWhere('description', 'like', '%' . $search . '%'); // Buscar también por código si es relevante
+
+        $total = $query->count();
+
+        $data = $query->offset(($page - 1) * $perPage)
+                    ->limit($perPage)
+                    ->get();
+
+        $formattedData = $data->map(function($item) {
+            return [
+                'id' => $item->id,
+                'cuenta' => $item->cuenta,
+                'text' => $item->description,
+                'signo' => $item->signo,
+                'tipoCuenta' => $item->tipocuenta,
+            ];
+        });
+
+        return response()->json([
+            'results' => $formattedData,
+            'pagination' => [
+                'more' => ($page * $perPage) < $total
+            ],
+            'total_count' => $total
+        ]);
+    }
 }
