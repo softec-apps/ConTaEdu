@@ -16,6 +16,20 @@
                                 @else
                                     @if ( $asientosContables->count() > 0 )
                                         <x-primary-button data-bs-toggle="modal" data-bs-target="#sendExercise">Enviar</x-primary-button>
+
+                                        <x-modal :name="__('sendExercise')" :size="__('md')" :show="false" :title="__('Enviar ejercicio al docente')"
+                                            :form="true" :form_method="__('get')" :form_action="route('estudiante.send_exercise', ['id' => $exercise->id])">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <p>Vas a enviar este ejercicio al docente.</p>
+                                                    <p>¿Estás seguro de que quieres enviar el ejercicio?</p>
+                                                </div>
+                                            </div>
+                                            <x-slot:footer>
+                                                <x-primary-button data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</x-primary-button>
+                                                <x-primary-button type="submit" form="sendExerciseForm" class="btn btn-success">Confirmar Envío</x-primary-button>
+                                            </x-slot:footer>
+                                        </x-modal>
                                     @else
                                         <x-primary-button class="disabled" data-bs-toggle="modal" data-bs-target="#sendExercise">Enviar</x-primary-button>
                                     @endif
@@ -58,7 +72,10 @@
                             <div class="card-header">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h6>Asientos Contables</h6>
-                                    <x-primary-button data-bs-toggle="modal" data-bs-target="#asientoModal">Nuevo Asiento</x-primary-button>
+                                    @if ( \Auth::user()->role == 3 )
+                                        <x-primary-button data-bs-toggle="modal" data-bs-target="#asientoModal">Nuevo Asiento</x-primary-button>
+                                        <x-estudiante.asiento-contable-modal :exercise="$exercise" />
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-body">
@@ -76,20 +93,5 @@
         </div>
     </x-layouts.dashboard>
 
-    <x-estudiante.asiento-contable-modal :exercise="$exercise" />
-
-    <x-modal :name="__('sendExercise')" :size="__('md')" :show="false" :title="__('Enviar ejercicio al docente')"
-        :form="true" :form_method="__('get')" :form_action="route('estudiante.send_exercise', ['id' => $exercise->id])">
-        <div class="row">
-            <div class="col-12 mb-3">
-                <p>Vas a enviar este ejercicio al docente.</p>
-                <p>¿Estás seguro de que quieres enviar el ejercicio?</p>
-            </div>
-        </div>
-        <x-slot:footer>
-            <x-primary-button data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</x-primary-button>
-            <x-primary-button type="submit" form="sendExerciseForm" class="btn btn-success">Confirmar Envío</x-primary-button>
-        </x-slot:footer>
-    </x-modal>
     @endsection
 </x-app-layout>

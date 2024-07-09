@@ -45,12 +45,15 @@
                         @endforelse
                     </div>
                 </div>
-                <hr class="my-4">
-                <div class="d-flex justify-content-end">
-                    <x-primary-button class="btn-sm me-2">Editar</x-primary-button>
-                    <x-primary-button :custom="true" class="btn-sm btn-danger">Eliminar</x-primary-button>
-                </div>
             </div>
+            @if ( \Auth::user()->role == 3 )
+                <div class="card-footer">
+                    <div class="d-flex justify-content-end">
+                        <x-primary-button class="btn-sm me-2">Editar</x-primary-button>
+                        <x-primary-button :custom="true" class="btn-sm btn-danger">Eliminar</x-primary-button>
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 </div>
