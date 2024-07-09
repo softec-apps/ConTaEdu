@@ -41,7 +41,7 @@ class Exercise extends Model
         return $this->hasOne(Assignment::class, 'ejercicio_id');
     }
 
-    public static function getAllByEstudianteId($id, $sent = null, $graded = null, $per_page = null)
+    public static function getAllByEstudianteId($id, $sent = null, $graded = null, $per_page = null, $additionalConditions = null)
     {
         $query = self::query();
 
@@ -75,10 +75,26 @@ class Exercise extends Model
             }
         });
 
+        // Aplicar condiciones adicionales si se proporcionan
+        if ($additionalConditions !== null && is_callable($additionalConditions)) {
+            $additionalConditions($query);
+        }
+
         if (isset($per_page)) {
             return $query->paginate($per_page);
         }
-        return $query->get();
+        return $query;
+    }
+
+    public static function getExerciseIfAssigned($exercise_id, $user_id)
+    {
+        $exercise = self::where('id', $exercise_id)
+            ->whereHas('asignaciones', function ($query) use ($user_id) {
+                $query->where('estudiante_id', $user_id);
+            })
+            ->first();
+
+        return $exercise; // Retornará null si no se encuentra ningún ejercicio
     }
 
     public function user()

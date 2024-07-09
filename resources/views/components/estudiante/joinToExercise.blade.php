@@ -51,7 +51,7 @@
     </div>
 </x-modal>
 
-@section('scripts')
+@push('scripts')
 <script>
     function searchExercise(formData) {
         // Realizar la consulta de ejercicio
@@ -107,4 +107,4 @@
         });
     })
 </script>
-@endsection
+@endpush
