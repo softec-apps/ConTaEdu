@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -33,4 +34,9 @@ class PlanCuentas  extends Model
         'updated_at',
     ];
 
+    // Relación con DetalleAsientoContable
+    public function detallesAsiento()
+    {
+        return $this->hasMany(DetalleAsientoContable::class, 'cuenta_id');
+    }
 }

@@ -97,6 +97,9 @@ Route::middleware('checkPermission:3')->group(function () {
     Route::post('/estudiante/ejercicio/{id}/asiento/create', [SolveExerciseController::class, 'store'])->name('estudiante.new_asiento');
     Route::get('/estudiante/asiento/detalle-row', [SolveExerciseController::class, 'new_detalle_asiento_contable'])->name('estudiante.new_detalle_asiento');
     Route::get('/estudiante/ejercicio/{id}/send', [SolveExerciseController::class, 'sendExercise'])->name('estudiante.send_exercise');
+
+    //Libro diario
+    Route::get('/estudiante/ejercicio/{id}/libro-diario', [SolveExerciseController::class, 'libroDiario'])->name('estudiante.libro_diario');
 });
 
 require __DIR__ . '/auth.php';
