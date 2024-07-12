@@ -82,27 +82,143 @@
                 </div>
               </div>
             </div>
+                    <div class="row mt-4">
+                        <div class="card col-lg-12">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6>Asientos Contables</h6>
+                                    @if ( \Auth::user()->role == 3 )
+                                        <x-primary-button data-bs-toggle="modal" data-bs-target="#asientoModal">Nuevo Asiento</x-primary-button>
+                                        <x-estudiante.new-asiento-contable-modal :exercise="$exercise" />
+                                        <x-estudiante.update-asiento-contable-modal :exercise="$exercise"/>
+                                        <x-estudiante.delete-asiento-contable-modal :exercise="$exercise"/>
+                                        @push('scripts')
+                                            <script>
+                                                function formatInputDate(date) {
+                                                    return moment(date).format('YYYY-MM-DD');
+                                                }
 
-            <div class="row mt-4">
-              <div class="card col-lg-12">
-                <div class="card-header">
-                  <div class="d-flex align-items-center justify-content-between">
-                    <h6>Asientos Contables</h6>
-                    @if (\Auth::user()->role == 3)
-                      <x-primary-button data-bs-toggle="modal"
-                        data-bs-target="#asientoModal">Nuevo
-                        Asiento</x-primary-button>
-                      <x-estudiante.asiento-contable-modal :exercise="$exercise" />
-                    @endif
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div id="entries">
-                    <!-- Los asientos contables se agregarán aquí dinámicamente -->
-                    @foreach ($asientosContables as $asiento)
-                      <x-estudiante.asiento-contable :asiento="$asiento" />
-                    @endforeach
-                  </div>
+                                                function accountIconFormat(signo) {
+                                                    var icon = '';
+                                                    switch (signo) {
+                                                        case 'P':
+                                                            icon = '<i class="fas fa-solid fa-circle-plus text-success"></i>';
+                                                            break;
+                                                        case 'N':
+                                                            icon = '<i class="fas fa-solid fa-circle-minus text-danger"></i>';
+                                                            break;
+                                                        case 'D':
+                                                            icon = '<i class="fas fa-solid fa-circle-dot text-warning"></i>';
+                                                            break;
+                                                        default:
+                                                            icon = '';
+                                                            break;
+                                                    }
+                                                    return icon;
+                                                }
+
+                                                function initializeSelect2ForRow(index, update=false) {
+                                                    const $element = `#${update ? 'update-' : ''}cuentas_${index}_account_id`;
+                                                    const $dropdownParent = `#${update ? 'updateAsientoModal' : 'asientoModal'}`;
+
+                                                    $($element).select2({
+                                                        theme: 'bootstrap-5',
+                                                        dropdownParent: $($dropdownParent),
+                                                        minimumInputLength: 1,
+                                                        ajax: {
+                                                            url: "{{ route('plancuentas.search') }}",
+                                                            dataType: 'json',
+                                                            delay: 250,
+                                                            data: function (params) {
+                                                                return {
+                                                                    q: params.term, // término de búsqueda
+                                                                    page: params.page || 1
+                                                                };
+                                                            },
+                                                            processResults: function (data, params) {
+                                                                params.page = params.page || 1;
+
+                                                                return {
+                                                                    results: data.results.map(function (item) {
+                                                                        return {
+                                                                            id: item.id,
+                                                                            text: item.cuenta + ' - ' + item.text,
+                                                                            signo: item.signo,
+                                                                            tipoCuenta: item.tipoCuenta,
+                                                                            disabled: item.tipoCuenta === 'T'
+                                                                        };
+                                                                    }),
+                                                                    pagination: {
+                                                                        more: (params.page * 30) < data.total_count
+                                                                    }
+                                                                };
+                                                            },
+                                                            cache: true
+                                                        },
+                                                        escapeMarkup: function (markup) { return markup; },
+                                                        templateResult: function (data) {
+                                                            if (data.loading) {
+                                                                return data.text;
+                                                            }
+
+                                                            var icon = accountIconFormat(data.signo);
+
+                                                            // Markup para la lista de resultados
+                                                            var markup = "<div class='select2-result-repository clearfix'>";
+                                                            if (data.tipoCuenta === 'T') {
+                                                                markup += "<div class='select2-result-repository__title font-weight-bold'>" + icon + data.text + "</div>";
+                                                            } else {
+                                                                markup += "<div class='select2-result-repository__title'>" + icon + data.text + "</div>";
+                                                            }
+                                                            markup += "</div>";
+
+                                                            return markup;
+                                                        },
+                                                        templateSelection: function (data) {
+                                                            if (!data.id) return data.text;
+
+                                                            var icon = accountIconFormat(data.signo);
+
+                                                            return icon + data.text;
+                                                        },
+                                                        matcher: function (params, data) {
+                                                            // No permitir selección de cuentas de tipo 'T'
+                                                            if (data.tipoCuenta === 'T') {
+                                                                return null;
+                                                            }
+
+                                                            // Lógica de búsqueda por defecto
+                                                            if ($.trim(params.term) === '') {
+                                                                return data;
+                                                            }
+
+                                                            if (typeof data.text === 'undefined') {
+                                                                return null;
+                                                            }
+
+                                                            if (data.text.toLowerCase().indexOf(params.term.toLowerCase()) > -1) {
+                                                                return data;
+                                                            }
+
+                                                            return null;
+                                                        }
+                                                    });
+                                                }
+                                            </script>
+                                        @endpush
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="entries">
+                                    <!-- Los asientos contables se agregarán aquí dinámicamente -->
+                                    @foreach ($asientosContables as $asiento)
+                                        <x-estudiante.asiento-contable :asiento="$asiento" />
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
