@@ -47,7 +47,7 @@
     </x-layouts.dashboard>
   @endsection
 
-  @section('scripts')
+  @push('scripts')
     <script type="module">
       $(document).ready(function() {
         $('#usersTable').DataTable(setDataTableConfig({
@@ -126,7 +126,7 @@
         });
       });
     </script>
-  @endsection
+  @endpush
 </x-app-layout>
 
 <!-- Incluir el modal-register y modal-editar en el layout -->

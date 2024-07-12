@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Validator;
 
+
 class SolveExerciseController extends Controller
 {
     protected function checkExistence($id)
@@ -46,6 +47,7 @@ class SolveExerciseController extends Controller
 
     public function new_detalle_asiento_contable(Request $request)
     {
+
         $index = $request->input('index',0);
         $update = $request->input('update',false);
 
@@ -133,8 +135,8 @@ class SolveExerciseController extends Controller
             \DB::rollBack();
             swal()->error(null, 'No se pudo validar la información. Verifica tus datos')->toast();
             return redirect()->back()
-                             ->withErrors($e->validator)
-                             ->withInput();
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
             // Revertir transacción
             \DB::rollBack();
@@ -273,4 +275,46 @@ class SolveExerciseController extends Controller
         }
     }
 
+  
+    public function libroDiario($id)
+    {
+        $exercise = self::checkExistence($id);
+
+        $asientosContables = AsientoContable::where('ejercicio_id', $id)
+            ->where('estudiante_id', auth()->id())
+            ->orderBy('fecha', 'asc')
+            ->with(['detalles.cuenta'])
+            ->get();
+
+        $libroDiario = [];
+        $totalDebe = 0;
+        $totalHaber = 0;
+
+        foreach ($asientosContables as $asiento) {
+            $entrada = [
+                'fecha' => $asiento->fecha,
+                'concepto' => $asiento->concepto,
+                'detalles' => []
+            ];
+
+            foreach ($asiento->detalles as $detalle) {
+                $entrada['detalles'][] = [
+                    'cuenta' => $detalle->cuenta->cuenta,
+                    'descripcion' => $detalle->cuenta->description,
+                    'debe' => $detalle->tipo_movimiento == 'debe' ? $detalle->monto : 0,
+                    'haber' => $detalle->tipo_movimiento == 'haber' ? $detalle->monto : 0
+                ];
+
+                if ($detalle->tipo_movimiento == 'debe') {
+                    $totalDebe += $detalle->monto;
+                } else {
+                    $totalHaber += $detalle->monto;
+                }
+            }
+
+            $libroDiario[] = $entrada;
+        }
+
+        return view('estudiante.libro-diario', compact('exercise', 'libroDiario', 'totalDebe', 'totalHaber'));
+    }
 }

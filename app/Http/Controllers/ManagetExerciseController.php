@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ManagetExerciseRequest;
+use App\Models\AsientoContable;
 use App\Models\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -192,12 +193,17 @@ class ManagetExerciseController extends Controller
             ->firstOrFail();
 
         $exercise = Exercise::findOrFail($exerciseId);
-        $student = User::findOrFail($studentId);
+        // $student = User::findOrFail($studentId);
+        $asientosContables = AsientoContable::where('ejercicio_id', $exerciseId)
+            ->where('estudiante_id', $studentId)
+            ->orderBy('fecha', 'asc')
+            ->get();
 
-        return view('docente.manageExercises.view-submission', [
+        return view('estudiante.exercise', [
             'exercise' => $exercise,
-            'student' => $student,
-            'assignment' => $assignment
+            // 'student' => $student,
+            // 'assignment' => $assignment
+            'asientosContables' => $asientosContables
         ]);
     }
 

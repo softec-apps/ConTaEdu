@@ -102,6 +102,9 @@ Route::middleware('checkPermission:3')->group(function () {
     Route::delete('/estudiante/ejercicio/asiento/delete', [SolveExerciseController::class, 'deleteAsiento'])->name('estudiante.delete_asiento');
 
     Route::get('/estudiante/ejercicio/{id}/send', [SolveExerciseController::class, 'sendExercise'])->name('estudiante.send_exercise');
+
+    //Libro diario
+    Route::get('/estudiante/ejercicio/{id}/libro-diario', [SolveExerciseController::class, 'libroDiario'])->name('estudiante.libro_diario');
 });
 
 require __DIR__ . '/auth.php';

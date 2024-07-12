@@ -51,7 +51,7 @@
         </x-layouts.dashboard>
     @endsection
 
-    @section('scripts')
+    @push('scripts')
         <script>
             $(document).ready(function() {
                 let miTabla = $('#usersTable').DataTable(setDataTableConfig({
@@ -157,5 +157,6 @@
                 });
             });
         </script>
-    @endsection
+    @endpush
+
 </x-app-layout>
