@@ -159,9 +159,18 @@ class ManagePlanCuentasController extends Controller
         $search = $request->input('q'); // Select2 usa 'q' por defecto para el término de búsqueda
         $page = $request->input('page', 1); // Para paginación
         $perPage = 10; // Número de resultados por página
+        $exact = $request->input('exact', false); // Nuevo parámetro para búsqueda exacta
 
-        $query = PlanCuentas::where('cuenta', 'like', '%' . $search . '%')
-                            ->orWhere('description', 'like', '%' . $search . '%'); // Buscar también por código si es relevante
+        $query = PlanCuentas::query();
+
+        if ($exact) {
+            // Si 'exact' es true, buscar por ID exacto
+            $query->where('id', $search);
+        } else {
+            // Búsqueda normal
+            $query->where('cuenta', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
+        }
 
         $total = $query->count();
 
