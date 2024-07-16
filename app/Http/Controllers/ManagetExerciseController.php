@@ -12,6 +12,7 @@ use App\View\Components\Ejercicio\ModalQualification;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Template;
 
 
 class ManagetExerciseController extends Controller
@@ -31,7 +32,8 @@ class ManagetExerciseController extends Controller
      */
     public function create()
     {
-        return view('docente.manageExercises.create');
+        $templates = Template::all();
+        return view('docente.manageExercises.create', compact('templates'));
     }
 
     /**
@@ -44,7 +46,7 @@ class ManagetExerciseController extends Controller
         $exercise->desc = $request->desc;
         $exercise->docente_id = auth()->user()->id;
         $exercise->access_code = Str::random(6);
-
+        $exercise->template_id = $request->template_id; // Añadir esta línea
         $exercise->save();
 
         swal()->success('Ejercicio creado', 'El ejercicio se ha guardado correctamente')->toast();

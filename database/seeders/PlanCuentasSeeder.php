@@ -4,11 +4,21 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Template;
+use App\Models\PlanCuentas;
+
+
 
 class PlanCuentasSeeder extends Seeder
 {
     public function run()
     {
+
+        $template = Template::firstOrCreate(
+            ['name' => 'Cuentas Supersias'],
+            ['description' => 'Template creado automáticamente por el seeder']
+        );
+
         $cuentas = [
             //Pag1
             ['cuenta' => 1, 'description' => 'ACTIVO', 'tipocuenta' => 'T', 'signo' => 'P', 'tipoestado' => 1],
@@ -414,7 +424,7 @@ class PlanCuentasSeeder extends Seeder
             ['cuenta' => 950304, 'description' => 'Financiación por préstamos a largo plazo', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 3],
             ['cuenta' => 950305, 'description' => 'Pagos de préstamos', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 3],
             ['cuenta' => 950306, 'description' => 'Pagos de pasivos por arrendamientos financieros', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 3],
-            //pag12      
+            //pag12
             ['cuenta' => 950307, 'description' => 'Importes procedentes de subvenciones del gobierno', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 3],
             ['cuenta' => 950308, 'description' => 'Dividendos pagados', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 3],
             ['cuenta' => 950309, 'description' => 'Intereses recibidos', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 3],
@@ -469,6 +479,8 @@ class PlanCuentasSeeder extends Seeder
 
         ];
 
-        DB::table('plan_cuentas')->insert($cuentas);
+        foreach ($cuentas as $cuenta) {
+            PlanCuentas::create(array_merge($cuenta, ['template_id' => $template->id]));
+        }
     }
 }

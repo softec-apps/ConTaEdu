@@ -1,6 +1,6 @@
 <li class="nav-item">
   <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-  <a class="nav-link" href="{{ route('plancuentas.index') }}">
+  <a class="nav-link" href="{{ route('template.index') }}">
     <span class="nav-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
         fill="currentColor" class="bi bi-journal-bookmark-fill"

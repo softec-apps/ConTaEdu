@@ -24,6 +24,7 @@ class ManagetExerciseRequest extends FormRequest
         return [
             'titulo' => ['required', 'string', 'max:255'],
             'desc' => ['required', 'string',],
+            'template_id' => 'required|exists:templates,id',
             // 'docente_id' => ['required', 'integer'],
             // 'access_code' => ['required', 'string', 'max:6'],
         ];

@@ -115,4 +115,9 @@ class Exercise extends Model
             })
             ->count();
     }
+
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
+    }
 }
