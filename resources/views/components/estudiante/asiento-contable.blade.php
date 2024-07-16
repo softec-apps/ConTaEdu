@@ -49,8 +49,8 @@
             @if ( \Auth::user()->role == 3 )
                 <div class="card-footer">
                     <div class="d-flex justify-content-end">
-                        <x-primary-button class="btn-sm me-2">Editar</x-primary-button>
-                        <x-primary-button :custom="true" class="btn-sm btn-danger">Eliminar</x-primary-button>
+                        <x-primary-button class="btn-sm me-2 update-asiento-btn" data-id="{{ $asiento->id }}" data-bs-toggle="modal" data-bs-target="#updateAsientoModal">Editar</x-primary-button>
+                        <x-primary-button :custom="true" class="btn-sm btn-danger delete-asiento-btn" data-id="{{ $asiento->id }}" data-bs-toggle="modal" data-bs-target="#deleteAsientoModal">Eliminar</x-primary-button>
                     </div>
                 </div>
             @endif

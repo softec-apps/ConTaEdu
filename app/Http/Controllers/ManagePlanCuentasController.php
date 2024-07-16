@@ -195,6 +195,8 @@ class ManagePlanCuentasController extends Controller
         ]);
     }
 
+
+
     public function showTemplateAccounts($templateId)
     {
         $template = \App\Models\Template::findOrFail($templateId);

@@ -103,7 +103,12 @@ Route::middleware('checkPermission:3')->group(function () {
     // Ver y resolver el ejercicio
     Route::get('/estudiante/ejercicio/{id}', [SolveExerciseController::class, 'index'])->name('estudiante.see_exercise');
     Route::post('/estudiante/ejercicio/{id}/asiento/create', [SolveExerciseController::class, 'store'])->name('estudiante.new_asiento');
+    Route::get('/estudiante/get/asiento/{asiento_id}', [SolveExerciseController::class, 'get_asiento'])->name('estudiante.get_asiento');
     Route::get('/estudiante/asiento/detalle-row', [SolveExerciseController::class, 'new_detalle_asiento_contable'])->name('estudiante.new_detalle_asiento');
+
+    Route::put('/estudiante/ejercicio/asiento/update', [SolveExerciseController::class, 'updateAsiento'])->name('estudiante.update_asiento');
+    Route::delete('/estudiante/ejercicio/asiento/delete', [SolveExerciseController::class, 'deleteAsiento'])->name('estudiante.delete_asiento');
+
     Route::get('/estudiante/ejercicio/{id}/send', [SolveExerciseController::class, 'sendExercise'])->name('estudiante.send_exercise');
 
     //Libro diario
