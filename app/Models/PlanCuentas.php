@@ -22,6 +22,7 @@ class PlanCuentas  extends Model
         'signo',
         'tipoestado',
         'est',
+        'template_id'
     ];
 
     /**
@@ -38,5 +39,10 @@ class PlanCuentas  extends Model
     public function detallesAsiento()
     {
         return $this->hasMany(DetalleAsientoContable::class, 'cuenta_id');
+    }
+
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
     }
 }

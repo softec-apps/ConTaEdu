@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ManagetStudentController;
 use App\Http\Controllers\ManagetExerciseController;
+use App\Http\Controllers\TemplateController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -75,6 +76,13 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::get('/exercise/related-student-count', [ManagetExerciseController::class, 'getRelatedStudentCount'])->name('exercise.related-student-count');
     Route::get('/progress-chart-data', [ManagetStudentController::class, 'getProgressChartData'])->name('student.progress-chart-data');
     Route::get('/created-exercises-data', [ManagetExerciseController::class, 'getCreatedExercisesData']);
+
+    // Routes  for templates
+    Route::get('/templates', [TemplateController::class, 'index'])->name('template.index');
+    Route::post('/templates', [TemplateController::class, 'store'])->name('template.store');
+    Route::put('/templates/{template}', [TemplateController::class, 'update'])->name('template.update');
+    Route::delete('/templates/{template}', [TemplateController::class, 'destroy'])->name('template.destroy');
+    Route::get('/template/{templateId}/accounts', [ManagePlanCuentasController::class, 'showTemplateAccounts'])->name('template.accounts');
 });
 
 // Routes for estudiante

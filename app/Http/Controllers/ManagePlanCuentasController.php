@@ -74,7 +74,8 @@ class ManagePlanCuentasController extends Controller
             'description' => 'required',
             'tipocuenta' => 'required',
             'tipoestado' => 'required',
-            'signo' => 'required'
+            'signo' => 'required',
+            'template_id' => 'required|exists:templates,id'
         ]);
 
         if (!$validatedData) {
@@ -83,7 +84,7 @@ class ManagePlanCuentasController extends Controller
 
         PlanCuentas::create($validatedData);
 
-        return redirect()->route('plancuentas.index');
+        return redirect()->route('template.accounts', $request->template_id)->with('success', 'Cuenta creada exitosamente');
     }
 
 
@@ -113,12 +114,13 @@ class ManagePlanCuentasController extends Controller
             'description' => 'required',
             'tipocuenta' => 'required',
             'signo' => 'required',
-            'tipoestado' => 'required'
+            'tipoestado' => 'required',
+            'template_id' => 'required|exists:templates,id'
         ]);
         $model = PlanCuentas::find($id);
         if ($model) {
             $model->update($validatedData);
-            return redirect()->route('plancuentas.index');
+            return redirect()->route('template.accounts', $request->template_id)->with('success', 'Cuenta actualizada exitosamente');
         } else {
             return back()->withErrors(['message' => 'model not found']);
         }
@@ -161,15 +163,15 @@ class ManagePlanCuentasController extends Controller
         $perPage = 10; // Número de resultados por página
 
         $query = PlanCuentas::where('cuenta', 'like', '%' . $search . '%')
-                            ->orWhere('description', 'like', '%' . $search . '%'); // Buscar también por código si es relevante
+            ->orWhere('description', 'like', '%' . $search . '%'); // Buscar también por código si es relevante
 
         $total = $query->count();
 
         $data = $query->offset(($page - 1) * $perPage)
-                    ->limit($perPage)
-                    ->get();
+            ->limit($perPage)
+            ->get();
 
-        $formattedData = $data->map(function($item) {
+        $formattedData = $data->map(function ($item) {
             return [
                 'id' => $item->id,
                 'cuenta' => $item->cuenta,
@@ -186,5 +188,24 @@ class ManagePlanCuentasController extends Controller
             ],
             'total_count' => $total
         ]);
+    }
+
+    public function showTemplateAccounts($templateId)
+    {
+        $template = \App\Models\Template::findOrFail($templateId);
+
+        if (request()->ajax()) {
+            $data = PlanCuentas::where('template_id', $templateId)
+                ->get()
+                ->map(function ($item) {
+                    $item->signod = $this->mapTipoSigno($item->signo);
+                    $item->tipoestadod = $this->mapTipoEstado($item->tipoestado);
+                    $item->tipocuentad = $this->mapTipoCuenta($item->tipocuenta);
+                    return $item;
+                });
+            return datatables()->of($data)->make(true);
+        }
+
+        return view('docente.cuentas.index', compact('template'));
     }
 }

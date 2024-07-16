@@ -39,6 +39,11 @@ class DatabaseSeeder extends Seeder
                 'role' => 3
             ]
         );
-        
+
+        $this->call([
+            TemplateSeeder::class,
+            PlanCuentasSeeder::class,
+            // Otros seeders...
+        ]);
     }
 }
