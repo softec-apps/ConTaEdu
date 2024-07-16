@@ -23,12 +23,24 @@
           @csrf
           <div class="mb-3">
             <label for="titulo" class="form-label">Título</label>
-            <input class="form-control" id="titulo" name="titulo" required></input>
+            <input class="form-control" id="titulo" name="titulo"
+              required></input>
           </div>
           <div class="mb-3">
             <label for="desc" class="form-label">Descripción</label>
             <textarea class="form-control" id="desc" name="desc" required
               cols="30" rows="5" style="width: 100%; height: 100%;"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="template_id" class="form-label">Template</label>
+            <select class="form-control" id="template_id" name="template_id"
+              required>
+              <option value="">Seleccione un template</option>
+              @foreach ($templates as $template)
+                <option value="{{ $template->id }}">{{ $template->name }}
+                </option>
+              @endforeach
+            </select>
           </div>
           <button type="submit" class="btn app-btn-primary">Guardar</button>
         </form>
