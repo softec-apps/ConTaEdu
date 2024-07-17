@@ -59,7 +59,7 @@
         </x-layouts.dashboard>
     @endsection
 
-    @section('scripts')
+    @push('scripts')
         <script>
             $(document).ready(function() {
                 let userType = $('#userTypeSelect').val();
@@ -159,6 +159,6 @@
                 });
             });
         </script>
-    @endsection
+    @endpush
 
 </x-app-layout>
