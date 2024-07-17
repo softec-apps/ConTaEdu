@@ -21,9 +21,9 @@
         <!-- Las filas de cuentas se agregarán aquí dinámicamente -->
     </div>
     <div class="row">
-        <div class="col-12 px-5 text-sm-start text-lg-end">
-            <p>Total Debe: <span id="totalDebe">0</span></p>
-            <p>Total Haber: <span id="totalHaber">0</span></p>
+        <div class="col-12 px-5 text-sm-start text-lg-end text-success" id="new-totales">
+            <p class="display-6">Total Debe: $ <span id="totalDebe">0</span></p>
+            <p class="display-6">Total Haber: $ <span id="totalHaber">0</span></p>
         </div>
     </div>
 </x-modal>
@@ -62,6 +62,13 @@
             });
             $('#totalDebe').text(totalDebe.toFixed(2));
             $('#totalHaber').text(totalHaber.toFixed(2));
+            if (totalDebe != totalHaber) {
+                $('#new-totales').addClass('text-danger');
+                $('#new-totales').removeClass('text-success');
+            } else {
+                $('#new-totales').addClass('text-success');
+                $('#new-totales').removeClass('text-danger');
+            }
         }
 
         $(document).ready(function () {
@@ -73,6 +80,7 @@
             });
 
             $(document).on('change', '.transaction-type, .amount', updateTotals);
+            $(document).on('input', '.amount', updateTotals);
         });
     </script>
 @endpush
