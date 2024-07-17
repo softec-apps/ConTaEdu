@@ -14,10 +14,11 @@
 
             <div class="row g-3 mb-4 align-items-center justify-content-between">
               <div class="col-auto">
-                <h1 class="app-page-title mb-0">Cuentas de {{ $template->name }}</h1>
+                <h1 class="app-page-title mb-0">Cuentas de {{ $template->name }}
+                </h1>
               </div>
               <div class="col-auto">
-                <a href="{{ url()->previous() }}" class="btn btn-secondary">Regresar</a>
+                <a href="{{ route('template.index') }}" class="btn btn-secondary">Regresar</a>
               </div>
             </div>
 

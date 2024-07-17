@@ -83,8 +83,9 @@ class ManagePlanCuentasController extends Controller
         }
 
         PlanCuentas::create($validatedData);
+        swal()->success('Cuenta creada', 'Cuenta creada exitosamente.')->toast();
 
-        return redirect()->route('template.accounts', $request->template_id)->with('success', 'Cuenta creada exitosamente');
+        return redirect()->route('template.accounts', $request->template_id);
     }
 
 
@@ -120,7 +121,8 @@ class ManagePlanCuentasController extends Controller
         $model = PlanCuentas::find($id);
         if ($model) {
             $model->update($validatedData);
-            return redirect()->route('template.accounts', $request->template_id)->with('success', 'Cuenta actualizada exitosamente');
+            swal()->success('Cuenta actualizada', 'La cuenta se ha actualizado correctamente')->toast();
+            return redirect()->route('template.accounts', $request->template_id);
         } else {
             return back()->withErrors(['message' => 'model not found']);
         }

@@ -69,8 +69,8 @@
                         method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger"
-                          onclick="return confirm('¿Estás seguro de que quieres eliminar este template?')">Eliminar</button>
+                        <button type="submit"
+                          class="btn btn-danger">Eliminar</button>
                       </form>
                     </div>
                   </div>
