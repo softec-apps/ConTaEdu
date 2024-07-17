@@ -160,17 +160,23 @@ class ManagePlanCuentasController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('q'); // Select2 usa 'q' por defecto para el término de búsqueda
-        $page = $request->input('page', 1); // Para paginación
+        $cuentaId = intval($request->input('id'));
+        $search = intval($request->input('q')); // Select2 usa 'q' por defecto para el término de búsqueda
+        $page = intval($request->input('page', 1)); // Para paginación
         $perPage = 10; // Número de resultados por página
-        $templateId = $request->input('template_id'); // Obtener el template_id de la solicitud
+        $templateId = intval($request->input('template_id')); // Obtener el template_id de la solicitud
 
         // Modificar la consulta para filtrar por template_id
-        $query = PlanCuentas::where('template_id', $templateId)
-            ->where(function ($query) use ($search) {
-                $query->where('cuenta', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%');
-            });
+        if ($cuentaId) {
+            $query = PlanCuentas::where('id', '=', $cuentaId)->where('template_id', '=', $templateId);
+        }
+        else {
+            $query = PlanCuentas::where('template_id', $templateId)
+                ->where(function ($query) use ($search) {
+                    $query->where('cuenta', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+        }
 
         $total = $query->count();
 

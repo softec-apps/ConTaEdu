@@ -18,9 +18,9 @@
         <!-- Las filas de cuentas se agregarán aquí dinámicamente -->
     </div>
     <div class="row">
-        <div class="col-12 px-5 text-sm-start text-lg-end">
-            <p>Total Debe: <span id="update-totalDebe">0</span></p>
-            <p>Total Haber: <span id="update-totalHaber">0</span></p>
+        <div class="col-12 px-5 text-sm-start text-lg-end" id="update-totales">
+            <p class="display-6">Total Debe: $ <span id="update-totalDebe">0</span></p>
+            <p class="display-6">Total Haber: $ <span id="update-totalHaber">0</span></p>
         </div>
     </div>
 </x-modal>
@@ -47,8 +47,9 @@
                                 url: "{{ route('plancuentas.search') }}",
                                 dataType: 'json',
                                 data: {
-                                    q: detalle.cuenta_id,
-                                    exact: true // Añade este parámetro para indicar que quieres una coincidencia exacta
+                                    id: detalle.cuenta_id,
+                                    exact: true, // Añade este parámetro para indicar que quieres una coincidencia exacta
+                                    template_id: '{{ $exercise->template_id }}'
                                 },
                                 success: function (data) {
                                     if (data.results && data.results.length > 0) {
@@ -101,6 +102,13 @@
             });
             $('#update-totalDebe').text(totalDebe.toFixed(2));
             $('#update-totalHaber').text(totalHaber.toFixed(2));
+            if (totalDebe != totalHaber) {
+                $('#update-totales').addClass('text-danger');
+                $('#update-totales').removeClass('text-success');
+            } else {
+                $('#update-totales').addClass('text-success');
+                $('#update-totales').removeClass('text-danger');
+            }
         }
 
         $(document).ready(function () {
@@ -112,6 +120,7 @@
             });
 
             $(document).on('change', '.update-transaction-type, .update-amount', updateEditTotals);
+            $(document).on('input', '.update-amount', updateEditTotals);
 
             // Update Asiento
             $(document).on('click', '.update-asiento-btn', async function () {
@@ -144,7 +153,6 @@
                     }
 
                     updateEditTotals();
-                    // $('#editAsientoModal').modal('show');
                 } catch (error) {
                     console.error('Error al cargar los datos del asiento:', error);
                 }

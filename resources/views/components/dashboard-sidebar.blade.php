@@ -26,23 +26,17 @@
         <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                 <li class="nav-item">
-                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                    <a class="nav-link active"
-                        @switch(Auth::user()->role ?? '')
-                            @case(1)
-                                href="{{ route('admin.dashboard') }}"
-                                @break
-                            @case(2)
-                                href="{{ route('docente.dashboard') }}"
-                                @break
-                            @case(3)
-                                href="{{ route('estudiante.dashboard') }}"
-                                @break
-                            @default
-                                href="{{ route('admin.dashboard') }}"
-                                @break
-                        @endswitch
-                    >
+                @php
+                    $roleRoutes = [
+                        1 => 'admin.dashboard',
+                        2 => 'docente.dashboard',
+                        3 => 'estudiante.dashboard',
+                    ];
+
+                    $currentRoute = route($roleRoutes[Auth::user()->role ?? 1] ?? 'admin.dashboard');
+                @endphp
+
+                <a class="nav-link {{ request()->url() === $currentRoute ? 'active' : '' }}" href="{{ $currentRoute }}">
                         <span class="nav-icon">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door"
                                 fill="currentColor" xmlns="http://www.w3.org/2000/svg">

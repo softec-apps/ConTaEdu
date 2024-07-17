@@ -83,6 +83,10 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::put('/templates/{template}', [TemplateController::class, 'update'])->name('template.update');
     Route::delete('/templates/{template}', [TemplateController::class, 'destroy'])->name('template.destroy');
     Route::get('/template/{templateId}/accounts', [ManagePlanCuentasController::class, 'showTemplateAccounts'])->name('template.accounts');
+    //Libro diario
+    Route::get('/exercise/{exerciseId}/submission/{studentId}/libro-diario', [SolveExerciseController::class, 'libroDiario'])->name('docente.view-libro_diario');
+    //Libro mayor
+    Route::get('/exercise/{exerciseId}/submission/{studentId}/libro-mayor', [SolveExerciseController::class, 'libroMayor'])->name('docente.view-libro_mayor');
 });
 
 // Routes for estudiante
@@ -113,6 +117,8 @@ Route::middleware('checkPermission:3')->group(function () {
 
     //Libro diario
     Route::get('/estudiante/ejercicio/{id}/libro-diario', [SolveExerciseController::class, 'libroDiario'])->name('estudiante.libro_diario');
+    //Libro mayor
+    Route::get('/estudiante/ejercicio/{id}/libro-mayor', [SolveExerciseController::class, 'libroMayor'])->name('estudiante.libro_mayor');
 });
 
 require __DIR__ . '/auth.php';

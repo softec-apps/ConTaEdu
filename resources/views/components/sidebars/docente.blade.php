@@ -1,6 +1,12 @@
 <li class="nav-item">
   <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-  <a class="nav-link" href="{{ route('template.index') }}">
+  @php
+    $activeRoutes = [
+      'template.index',
+      'template.accounts',
+    ];
+  @endphp
+  <a class="nav-link {{ in_array(request()->route()->getName(), $activeRoutes) ? 'active' : '' }}" href="{{ route('template.index') }}">
     <span class="nav-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
         fill="currentColor" class="bi bi-journal-bookmark-fill"
@@ -15,7 +21,7 @@
 </li>
 <li class="nav-item">
   <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-  <a class="nav-link" href="{{ route('student.index') }}">
+  <a class="nav-link {{ request()->routeIs('student.index') ? 'active' : '' }}" href="{{ route('student.index') }}">
     <span class="nav-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
         fill="currentColor" class="bi bi-journal-bookmark-fill"
@@ -28,7 +34,7 @@
 </li>
 <li class="nav-item">
   <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-  <a class="nav-link" href="{{ route('exercise.index') }}">
+  <a class="nav-link {{ request()->routeIs('exercise.index') ? 'active' : '' }}" href="{{ route('exercise.index') }}">
     <span class="nav-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
         fill="currentColor" class="bi bi-journal-bookmark-fill"

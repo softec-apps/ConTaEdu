@@ -13,9 +13,9 @@ use Validator;
 
 class SolveExerciseController extends Controller
 {
-    protected function checkExistence($id)
+    protected function checkExistence($id, $student_id = null)
     {
-        $exercise = Exercise::getExerciseIfAssigned($id, \Auth::id());
+        $exercise = Exercise::getExerciseIfAssigned($id, $student_id ?? \Auth::id());
         if (!isset($exercise)) {
             abort(404);
         }
@@ -275,13 +275,13 @@ class SolveExerciseController extends Controller
         }
     }
 
-  
-    public function libroDiario($id)
+
+    public function libroDiario($id, $student_id = null)
     {
-        $exercise = self::checkExistence($id);
+        $exercise = self::checkExistence($id, $student_id ?? auth()->id());
 
         $asientosContables = AsientoContable::where('ejercicio_id', $id)
-            ->where('estudiante_id', auth()->id())
+            ->where('estudiante_id', $student_id ?? auth()->id())
             ->orderBy('fecha', 'asc')
             ->with(['detalles.cuenta'])
             ->get();
@@ -316,5 +316,54 @@ class SolveExerciseController extends Controller
         }
 
         return view('estudiante.libro-diario', compact('exercise', 'libroDiario', 'totalDebe', 'totalHaber'));
+    }
+
+
+    public function libroMayor($id, $student_id = null)
+    {
+        $exercise = self::checkExistence($id, $student_id ?? auth()->id());
+
+        $asientosContables = AsientoContable::where('ejercicio_id', $id)
+            ->where('estudiante_id', $student_id ?? auth()->id())
+            ->orderBy('fecha', 'asc')
+            ->with(['detalles.cuenta'])
+            ->get();
+
+        $libroMayor = [];
+        $cuentas = [];
+
+        // Agrupar los asientos por la propiedad detalles.cuenta
+        foreach ($asientosContables as $asiento) {
+            foreach ($asiento->detalles as $detalle) {
+                $cuentaId = $detalle->cuenta_id;
+                $cuentaDesc = $detalle->cuenta->description;
+
+                if (!isset($cuentas[$cuentaId])) {
+                    $cuentas[$cuentaId] = [
+                        'cuenta' => $cuentaDesc,
+                        'movimientos' => []
+                    ];
+                }
+
+                $cuentas[$cuentaId]['movimientos'][] = [
+                    'fecha' => $asiento->fecha,
+                    'concepto' => $asiento->concepto,
+                    'debe' => $detalle->tipo_movimiento == 'debe' ? $detalle->monto : 0,
+                    'haber' => $detalle->tipo_movimiento == 'haber' ? $detalle->monto : 0,
+                ];
+            }
+        }
+
+        // Calcular el saldo para cada cuenta
+        foreach ($cuentas as &$cuenta) {
+            $saldo = 0;
+            foreach ($cuenta['movimientos'] as &$movimiento) {
+                $saldo += $movimiento['debe'] - $movimiento['haber'];
+                $movimiento['saldo'] = $saldo;
+            }
+            $cuenta['saldo'] = $saldo;
+        }
+
+        return view('estudiante.libro-mayor', compact('exercise', 'cuentas'));
     }
 }

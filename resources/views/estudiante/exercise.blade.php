@@ -67,17 +67,25 @@
                 <div class="card-body">
                   <div class="d-flex flex-column gap-3">
 
+                  @if (\Auth::user()->role == 3)
                     <a href="{{ route('estudiante.libro_diario', ['id' => $exercise->id]) }}"
+                  @elseif (\Auth::user()->role == 2)
+                    <a href="{{ route('docente.view-libro_diario', ['exerciseId' => $exercise->id, 'studentId' => $exercise->asignaciones->estudiante->id]) }}"
+                  @endif
                       class="btn btn-warning d-flex align-items-center justify-content-around w-100">
                       <i class="fa-solid fa-file-invoice-dollar fs-4 me-2"></i>
                       <span>Libro Diario</span>
                     </a>
-                    <x-primary-button data-bs-toggle="modal"
-                      data-bs-target="#asientoModal" custom="true"
-                      class="btn-info d-flex align-items-center justify-content-around w-100">
+
+                  @if (\Auth::user()->role == 3)
+                    <a href="{{ route('estudiante.libro_mayor', ['id' => $exercise->id]) }}"
+                  @elseif (\Auth::user()->role == 2)
+                    <a href="{{ route('docente.view-libro_mayor', ['exerciseId' => $exercise->id, 'studentId' => $exercise->asignaciones->estudiante->id]) }}"
+                  @endif
+                      class="btn btn-info d-flex align-items-center justify-content-around w-100">
                       <i class="fa-solid fa-book fs-4 me-2"></i>
                       <span>Libro Mayor</span>
-                    </x-primary-button>
+                    </a>
                   </div>
                 </div>
               </div>
