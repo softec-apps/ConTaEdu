@@ -482,5 +482,30 @@ class PlanCuentasSeeder extends Seeder
         foreach ($cuentas as $cuenta) {
             PlanCuentas::create(array_merge($cuenta, ['template_id' => $template->id]));
         }
+
+        $templateContabilidadBase = Template::firstOrCreate(
+            ['name' => 'ContabilidadBase'],
+            ['description' => 'Template creado automáticamente por el seeder']
+        );
+
+        $cuentasSugeridas = [
+            ['cuenta' => 1101, 'description' => 'Caja y Bancos', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 1],
+            ['cuenta' => 1102, 'description' => 'Clientes', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 1],
+            ['cuenta' => 1103, 'description' => 'Inventarios', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 1],
+            ['cuenta' => 1201, 'description' => 'Activo Fijo', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 1],
+            ['cuenta' => 2101, 'description' => 'Proveedores', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 1],
+            ['cuenta' => 2201, 'description' => 'Préstamos Bancarios', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 1],
+            ['cuenta' => 3101, 'description' => 'Capital Social', 'signo' => 'P', 'tipocuenta' => 'T', 'tipoestado' => 1],
+            ['cuenta' => 3201, 'description' => 'Utilidades Retenidas', 'signo' => 'P', 'tipocuenta' => 'T', 'tipoestado' => 1],
+            ['cuenta' => 4101, 'description' => 'Ventas', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 2],
+            ['cuenta' => 4201, 'description' => 'Ingresos Financieros', 'signo' => 'P', 'tipocuenta' => 'D', 'tipoestado' => 2],
+            ['cuenta' => 5101, 'description' => 'Gastos de Administración', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 2],
+            ['cuenta' => 5201, 'description' => 'Gastos de Ventas', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 2],
+            ['cuenta' => 5301, 'description' => 'Gastos Financieros', 'signo' => 'N', 'tipocuenta' => 'D', 'tipoestado' => 2],
+        ];
+
+        foreach ($cuentasSugeridas as $cuenta) {
+            PlanCuentas::create(array_merge($cuenta, ['template_id' => $templateContabilidadBase->id]));
+        }
     }
 }
