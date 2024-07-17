@@ -12,11 +12,13 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                    <div class="col-12">
+                        <h6 class="card-title mb-1 text-primary">{{ $asiento->concepto }}</h6>
+                    </div>
                     <div class="col-6 border-end">
                         <h5 class="text-center text-muted mb-3 border-bottom">Debe</h5>
                         @forelse ($detallesGrouped['debe'] ?? [] as $detalle)
                             <div class="card my-2 p-2 border-0 shadow-sm">
-                                <h6 class="card-title mb-1 text-primary">{{ $asiento->concepto }}</h6>
                                 <p class="mb-1"><strong>Cuenta:</strong> <span
                                         class="text-muted">{{ $detalle->cuenta->cuenta }}</span></p>
                                 <p class="mb-1"><strong>Descripción:</strong> <span
@@ -32,7 +34,6 @@
                         <h5 class="text-center text-muted mb-3 border-bottom">Haber</h5>
                         @forelse ($detallesGrouped['haber'] ?? [] as $detalle)
                             <div class="card my-2 p-2 border-0 shadow-sm">
-                                <h6 class="card-title mb-1 text-primary">{{ $asiento->concepto }}</h6>
                                 <p class="mb-1"><strong>Cuenta:</strong> <span
                                         class="text-muted">{{ $detalle->cuenta->cuenta }}</span></p>
                                 <p class="mb-1"><strong>Descripción:</strong> <span
