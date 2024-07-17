@@ -64,9 +64,9 @@ class Assignment extends Model
         return self::whereHas('exercise', function ($query) use ($docenteId) {
             $query->where('docente_id', $docenteId);
         })
-            ->select('estudiante_id')
-            ->distinct()
-            ->count();
+            // ->select('estudiante_id')
+            ->distinct('estudiante_id')
+            ->count('estudiante_id');
     }
 
     public function exercise()

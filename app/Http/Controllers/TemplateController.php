@@ -21,26 +21,46 @@ class TemplateController extends Controller
         ]);
 
         Template::create($validatedData);
+        swal()->success('Template creado', 'Template creado exitosamente.')->toast();
 
-        return redirect()->route('template.index')->with('success', 'Template creado exitosamente.');
+        return redirect()->route('template.index');
     }
 
     public function update(Request $request, Template $template)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:500',
-            'description' => 'required',
-        ]);
+        try {
+            if ($template) {
+                $validatedData = $request->validate([
+                    'name' => 'required|max:500',
+                    'description' => 'required',
+                ]);
 
-        $template->update($validatedData);
+                $template->update($validatedData);
 
-        return redirect()->route('template.index')->with('success', 'Template actualizado exitosamente.');
+                swal()->success('Template actualizado', 'El template se ha actualizado correctamente')->toast();
+            } else {
+                swal()->error('Error', 'El template no existe')->toast();
+            }
+        } catch (\Exception $e) {
+            swal()->error('Error', 'Hubo un problema al actualizar el template: ' . $e->getMessage())->toast();
+        }
+
+        return redirect()->route('template.index');
     }
 
     public function destroy(Template $template)
     {
-        $template->delete();
+        try {
+            if ($template) {
+                $template->delete();
+                swal()->success('Template eliminado', 'El template se ha eliminado correctamente')->toast();
+            } else {
+                swal()->error('Error', 'El template no existe')->toast();
+            }
+        } catch (\Exception $e) {
+            swal()->error('Error', 'Hubo un problema al eliminar el template: ' . $e->getMessage())->toast();
+        }
 
-        return redirect()->route('template.index')->with('success', 'Template eliminado exitosamente.');
+        return redirect()->route('template.index');
     }
 }
