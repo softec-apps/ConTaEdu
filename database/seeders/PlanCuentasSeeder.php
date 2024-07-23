@@ -16,7 +16,7 @@ class PlanCuentasSeeder extends Seeder
 
         $template = Template::firstOrCreate(
             ['name' => 'Cuentas Supersias'],
-            ['description' => 'Template creado automáticamente por el seeder']
+            ['description' => 'Las cuentas de supersias son las cuentas que se utilizan para llevar el registro de las transacciones financieras de una empresa.']
         );
 
         $cuentas = [
@@ -485,7 +485,7 @@ class PlanCuentasSeeder extends Seeder
 
         $templateContabilidadBase = Template::firstOrCreate(
             ['name' => 'ContabilidadBase'],
-            ['description' => 'Template creado automáticamente por el seeder']
+            ['description' => 'Plantilla de contabilidad base']
         );
 
         $cuentasSugeridas = [

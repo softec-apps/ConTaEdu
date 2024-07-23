@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('desc');
             $table->foreignId('docente_id');
             $table->foreign('docente_id')->references('id')->on('users')->onDelete('CASCADE')->onUpdate('CASCADE'); // Foreign Key
-            $table->string('access_code', 6);
+            $table->string('access_code', 6)->unique()->charset('ascii')->collation('ascii_bin');
             $table->foreignId('template_id')->nullable()->constrained('templates');
             $table->timestamps();
         });
