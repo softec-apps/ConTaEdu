@@ -6,7 +6,7 @@
           <div class="container-xl">
             <div class="row g-3 mb-4 align-items-center justify-content-between">
               <div class="col-auto">
-                <h1 class="app-page-title mb-0">Templates Registrados</h1>
+                <h1 class="app-page-title mb-0">Templates Contables Registrados </h1>
               </div>
               <div class="col-auto">
                 <div class="page-utilities">
@@ -65,13 +65,46 @@
                       <a href="#" class="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#editTemplateModal{{ $template->id }}">Editar</a>
-                      <form action="{{ route('template.destroy', $template) }}"
-                        method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                          class="btn btn-danger">Eliminar</button>
-                      </form>
+                      <button type="button" class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal{{ $template->id }}">Eliminar</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Modal de confirmación de eliminación -->
+                <div class="modal fade" id="confirmDeleteModal{{ $template->id }}"
+                  tabindex="-1"
+                  aria-labelledby="confirmDeleteModalLabel{{ $template->id }}"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title"
+                          id="confirmDeleteModalLabel{{ $template->id }}">
+                          Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close"
+                          data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Si eliminas este template, se eliminarán todas las
+                          cuentas relacionadas con ella. Además, puede haber
+                          problemas si existen ejercicios contables asociados a
+                          este template.</p>
+                        <p>¿Estás seguro de que deseas eliminar este templete?
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                          data-bs-dismiss="modal">Cancelar</button>
+                        <form action="{{ route('template.destroy', $template) }}"
+                          method="POST" class="d-inline">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit"
+                            class="btn btn-danger">Eliminar</button>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -120,4 +120,9 @@ class Exercise extends Model
     {
         return $this->belongsTo(Template::class);
     }
+
+    public function setAccessCodeAttribute($value)
+    {
+        $this->attributes['access_code'] = strtoupper($value);
+    }
 }
