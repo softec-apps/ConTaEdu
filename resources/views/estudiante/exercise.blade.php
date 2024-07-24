@@ -1,7 +1,9 @@
 <x-app-layout>
   @section('main')
-    <!-- Join to exercise -->
+    <!-- Join/leave to exercise -->
     <x-estudiante.joinToExercise />
+    <x-ejercicio.modal-leave />
+
     <x-layouts.dashboard>
       <div class="app-wrapper">
         <div class="app-content pt-3 p-md-3 p-lg-4">
@@ -11,42 +13,51 @@
                 <h1 class="app-page-title mb-0">Ejercicio: {{ $exercise->titulo }}
                 </h1>
                 @if (\Auth::user()->role == 3)
-                  <!-- Mostrar botón enviar para estudiantes -->
-                  @if ($exercise->asignaciones->sent)
-                    <x-primary-button :custom="true"
-                      class="btn border border-success disabled"><i
-                        class="fa-regular fa-circle-check"></i>
-                      Enviado</x-primary-button>
-                  @else
-                    @if ($asientosContables->count() > 0)
-                      <x-primary-button data-bs-toggle="modal"
-                        data-bs-target="#sendExercise">Enviar</x-primary-button>
+                  <!-- Mostrar botón salir del ejercicio y enviar para estudiantes -->
+                  <div>
+                    <x-primary-button :custom="true" class="btn btn-outline-danger border border-danger btn-leave-exercise"
+                      data-exercise-id="{{ $exercise->id }}">Abandonar ejercicio</x-primary-button>
 
-                      <x-modal :name="__('sendExercise')" :size="__('md')"
-                        :show="false" :title="__('Enviar ejercicio al docente')" :form="true"
-                        :form_method="__('get')" :form_action="route('estudiante.send_exercise', [
-                            'id' => $exercise->id,
-                        ])">
-                        <div class="row">
-                          <div class="col-12 mb-3">
-                            <p>Vas a enviar este ejercicio al docente.</p>
-                            <p>¿Estás seguro de que quieres enviar el ejercicio?
-                            </p>
-                          </div>
-                        </div>
-                        <x-slot:footer>
-                          <x-primary-button data-bs-dismiss="modal"
-                            class="btn btn-secondary">Cancelar</x-primary-button>
-                          <x-primary-button type="submit" form="sendExerciseForm"
-                            class="btn btn-success">Confirmar
-                            Envío</x-primary-button>
-                        </x-slot:footer>
-                      </x-modal>
+                    <x-ejercicio.modal-leave/>
+                    @if ($exercise->asignaciones->sent)
+                      <x-primary-button :custom="true"
+                        class="btn border border-success disabled"><i
+                          class="fa-regular fa-circle-check"></i>
+                        Enviado</x-primary-button>
                     @else
-                      <x-primary-button class="disabled" data-bs-toggle="modal"
-                        data-bs-target="#sendExercise">Enviar</x-primary-button>
+                      @if ($asientosContables->count() > 0)
+                        <x-primary-button data-bs-toggle="modal"
+                          data-bs-target="#sendExercise">Enviar</x-primary-button>
+
+                        <x-modal :name="__('sendExercise')" :size="__('md')"
+                          :show="false" :title="__('Enviar ejercicio al docente')" :form="true"
+                          :form_method="__('get')" :form_action="route('estudiante.send_exercise', [
+                              'id' => $exercise->id,
+                          ])">
+                          <div class="row">
+                            <div class="col-12 mb-3">
+                              <p>
+                                Vas a enviar este ejercicio a revisión.
+                                Una vez enviado no podrás cambiar tus respuestas.
+                              </p>
+                              <p class="text-danger">¿Estás seguro/a de que quieres enviar el ejercicio?
+                              </p>
+                            </div>
+                          </div>
+                          <x-slot:footer>
+                            <x-primary-button data-bs-dismiss="modal"
+                              class="btn btn-secondary">Cancelar</x-primary-button>
+                            <x-primary-button type="submit" form="sendExerciseForm"
+                              class="btn btn-success">Confirmar
+                              Envío</x-primary-button>
+                          </x-slot:footer>
+                        </x-modal>
+                      @else
+                        <x-primary-button class="disabled" data-bs-toggle="modal"
+                          data-bs-target="#sendExercise">Enviar</x-primary-button>
+                      @endif
                     @endif
-                  @endif
+                  </div>
                 @endif
               </div>
             </div>

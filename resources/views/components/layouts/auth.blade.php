@@ -8,7 +8,7 @@
         </div><!--//auth-main-col-->
         <style>
             .new-auth-background-holder {
-                background: url("{{ asset('logo.png') }}") no-repeat center center;
+                background: url("{{ asset('images/accountants.png') }}") no-repeat center center;
                 background-size: cover;
                 height: 100vh;
                 min-height: 100%
