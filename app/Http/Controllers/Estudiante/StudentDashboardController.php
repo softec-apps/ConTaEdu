@@ -9,6 +9,16 @@ use App\Models\Assignment;
 
 class StudentDashboardController extends Controller
 {
+    protected function checkExistence($id, $student_id = null)
+    {
+        $exercise = Exercise::getExerciseIfAssigned($id, $student_id ?? \Auth::id());
+        if (!isset($exercise)) {
+            abort(404);
+        }
+        return $exercise;
+    }
+
+
     public function index()
     {
         $perPage = 4;
@@ -83,6 +93,23 @@ class StudentDashboardController extends Controller
         } catch (\Exception $e) {
             swal()->error(null, 'No se pudo unir al ejercicio')->toast();
             return redirect()->route('estudiante.dashboard')->with('error', $e->getMessage());
+        }
+    }
+
+    public function leaveExercise(Request $request)
+    {
+        $id = $request->get('exercise_id');
+        try {
+            $exercise = self::checkExistence($id, auth()->id());
+
+            $exercise->asignaciones()->where('estudiante_id', auth()->id())->delete();
+
+            swal()->success(null, 'Acaba de salir del ejercicio')->toast();
+            return redirect()->route('estudiante.pending_exercises');
+        } catch(\Exception $e) {
+            // Si el ejercicio no existe
+            swal()->error(null, 'No fue posible encontrar el ejercicio o salir del mismo')->toast();
+            return redirect()->route('estudiante.pending_exercises');
         }
     }
 

@@ -2,8 +2,9 @@
     <x-slot:title>Tablero</x-slot>
 
     @section('main')
-    <!-- Join to exercise -->
+    <!-- Join/leave to exercise -->
     <x-estudiante.joinToExercise />
+    <x-ejercicio.modal-leave />
 
         <x-layouts.dashboard>
             <div class="app-wrapper">

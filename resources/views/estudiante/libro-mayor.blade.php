@@ -1,5 +1,9 @@
 <x-app-layout>
     @section('main')
+    <!-- Join/leave to exercise -->
+    <x-estudiante.joinToExercise />
+    <x-ejercicio.modal-leave />
+
     <x-layouts.dashboard>
         <div class="app-wrapper">
             <div class="app-content pt-3 p-md-3 p-lg-4">

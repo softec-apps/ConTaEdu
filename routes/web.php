@@ -96,6 +96,7 @@ Route::middleware('checkPermission:3')->group(function () {
     Route::get('/estudiante/dashboard', [StudentDashboardController::class, 'index'])->name('estudiante.dashboard');
     Route::post('/estudiante/search_exercise', [StudentDashboardController::class, 'searchExercise'])->name('estudiante.search_exercise');
     Route::post('/estudiante/join_exercise', [StudentDashboardController::class, 'joinExercise'])->name('estudiante.join_exercise');
+    Route::post('/estudiante/leave_exercise', [StudentDashboardController::class, 'leaveExercise'])->name('estudiante.leave_exercise');
     // Ver ejercicios pendientes o enviados/calificados
     Route::get('/estudiante/ejercicios/pendientes', [StudentDashboardController::class, 'pendingExercises'])->name('estudiante.pending_exercises');
     Route::get('/estudiante/ejercicios/pendientes/search', [StudentDashboardController::class, 'searchPending'])->name('estudiante.search_pending');

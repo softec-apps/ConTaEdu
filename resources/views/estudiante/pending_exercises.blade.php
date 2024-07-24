@@ -1,8 +1,10 @@
 <x-app-layout>
   <x-slot:title>Pendientes</x-slot>
   @section('main')
-  <!-- Join to exercise -->
-  <x-estudiante.joinToExercise />
+    <!-- Join/leave to exercise -->
+    <x-estudiante.joinToExercise />
+    <x-ejercicio.modal-leave />
+
     <x-layouts.dashboard>
       <div class="app-wrapper">
         <div class="app-content pt-3 p-md-3 p-lg-4">

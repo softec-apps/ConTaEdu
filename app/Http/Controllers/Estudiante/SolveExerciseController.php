@@ -22,6 +22,16 @@ class SolveExerciseController extends Controller
         return $exercise;
     }
 
+    protected function checkExerciseNotSent($exercise)
+    {
+        // Verificar si ya se envio el ejercicio
+        if ($exercise->asignaciones->sent) {
+            // swal()->error(null, 'Ya se envió el ejercicio')->toast();
+            // return redirect()->back();
+            abort(400);
+        }
+    }
+
     public function index(Request $request)
     {
         $idExercise = $request->id;
@@ -104,6 +114,8 @@ class SolveExerciseController extends Controller
 
             // Verificar existencia del ejercicio
             $exercise = self::checkExistence($exerciseId);
+            // Verificar ejercicio aun no enviado
+            self::checkExerciseNotSent($exercise);
 
             // Iniciar transacción
             \DB::beginTransaction();
@@ -150,7 +162,9 @@ class SolveExerciseController extends Controller
         try {
             $exerciseId = $request->id;
             // Verificar existencia del ejercicio
-            $exercise = self::checkExistence($exerciseId);
+            $exercise = self::checkExistence($exerciseId, \Auth::id());
+            // Verificar ejercicio aun no enviado
+            self::checkExerciseNotSent($exercise);
 
             // Enviar el ejercicio
             $exercise->asignaciones()->update(['sent' => true]);
@@ -190,7 +204,9 @@ class SolveExerciseController extends Controller
             $concepto = $validatedData['concept'];
 
             // Verificar existencia del ejercicio
-            self::checkExistence($exerciseId);
+            $exercise = self::checkExistence($exerciseId);
+            // Verificar ejercicio aun no enviado
+            self::checkExerciseNotSent($exercise);
 
             // Iniciar transacción
             \DB::beginTransaction();
@@ -247,7 +263,9 @@ class SolveExerciseController extends Controller
             $exerciseId = $validatedData['exercise_id'];
             $asientoId = $validatedData['asiento_id'];
 
-            self::checkExistence($exerciseId);
+            $exercise = self::checkExistence($exerciseId);
+            // Verificar ejercicio aun no enviado
+            self::checkExerciseNotSent($exercise);
 
             // Iniciar transacción
             \DB::beginTransaction();
