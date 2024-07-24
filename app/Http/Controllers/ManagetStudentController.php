@@ -149,4 +149,21 @@ class ManagetStudentController extends Controller
                 return Carbon::now()->subWeek();
         }
     }
+
+    public function changePassword(Request $request, $id)
+    {
+        $request->validate([
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::find($id);
+
+        if ($user) {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            return response()->json(['success' => true, 'message' => 'La contraseña del estudiante ha sido actualizada']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
+    }
 }
