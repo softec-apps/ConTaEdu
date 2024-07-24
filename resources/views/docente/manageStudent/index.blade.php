@@ -79,6 +79,9 @@
             <button class="btn btn-danger btn-delete" data-id="${row.id}">
                 <i class="fas fa-trash"></i>
             </button>
+            <button class="btn btn-warning btn-change-password" data-id="${row.id}">
+    <i class="fas fa-key"></i>
+</button>
         `;
               }
             }
@@ -124,6 +127,84 @@
             }
           });
         });
+
+        // Event listener for the change password button
+        $('#usersTable').on('click', '.btn-change-password', function() {
+          var id = $(this).data('id');
+          var url = "{{ route('student.change-password', ':id') }}".replace(
+            ':id', id);
+          $('#formChangePassword').attr('action', url);
+          $('#modalChangePassword').modal('show');
+        });
+
+        // Handle form submission
+        $('#formChangePassword').on('submit', function(e) {
+          e.preventDefault();
+          var form = $(this);
+          var url = form.attr('action');
+
+          $.ajax({
+            url: url,
+            type: 'PUT',
+            data: form.serialize(),
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                'content')
+            },
+            success: function(response) {
+              console.log('Success response:', response);
+              if (response.success) {
+                $('#modalChangePassword').modal('hide');
+                console.log('Attempting to show success message');
+                Swal.fire({
+                  title: 'Actualización exitosa',
+                  text: 'La contraseña del estudiante ha sido actualizada',
+                  icon: 'success',
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+                form[0].reset();
+              } else {
+                console.log(
+                  'Success response, but success flag is false');
+                Swal.fire({
+                  title: 'Error',
+                  text: response.message ||
+                    'Hubo un problema al cambiar la contraseña',
+                  icon: 'error',
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  timer: 3000
+                });
+              }
+            },
+            error: function(xhr, status, error) {
+              console.error('Error response:', xhr, status, error);
+              var errorMessage =
+                'Ha ocurrido un error al cambiar la contraseña.';
+              if (xhr.responseJSON && xhr.responseJSON.errors) {
+                errorMessage = Object.values(xhr.responseJSON.errors)
+                  .join('\n');
+              } else if (xhr.responseJSON && xhr.responseJSON
+                .message) {
+                errorMessage = xhr.responseJSON.message;
+              }
+              console.log('Attempting to show error message');
+              Swal.fire({
+                title: 'Error',
+                text: errorMessage,
+                icon: 'error',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+            }
+          });
+        });
       });
     </script>
   @endpush
@@ -132,3 +213,4 @@
 <!-- Incluir el modal-register y modal-editar en el layout -->
 <x-docente.modal-register />
 <x-docente.modal-edit />
+@include('docente.manageStudent.modal-change-password')

@@ -87,6 +87,8 @@ Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
     Route::get('/exercise/{exerciseId}/submission/{studentId}/libro-diario', [SolveExerciseController::class, 'libroDiario'])->name('docente.view-libro_diario');
     //Libro mayor
     Route::get('/exercise/{exerciseId}/submission/{studentId}/libro-mayor', [SolveExerciseController::class, 'libroMayor'])->name('docente.view-libro_mayor');
+    //Cambiar contraseña
+    Route::put('/student/{id}/change-password', [ManagetStudentController::class, 'changePassword'])->name('student.change-password');
 });
 
 // Routes for estudiante
