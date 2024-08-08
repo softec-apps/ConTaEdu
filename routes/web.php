@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Estudiante\StudentDashboardController;
 use App\Http\Controllers\ManagePlanCuentasController;
 use App\Http\Controllers\ManageUsersController;
@@ -14,6 +15,14 @@ use App\Http\Controllers\TemplateController;
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+
+Route::get('password/reset', function () {
+    return view('auth.reset-password');
+})->name('password.reset');
+
+Route::post('/password/update', [PasswordResetLinkController::class, 'storePass'])->name('password');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,7 +46,8 @@ Route::middleware('checkPermission:1')->prefix('admin')->group(function () {
     Route::put('/{id}', [ManageUsersController::class, 'update'])->name('users.update');
 });
 
-
+Route::post('/resetpass', [PasswordResetLinkController::class, 'store'])->name('password.email');
+    
 
 // Routes for docente
 Route::middleware('checkPermission:2')->prefix('docente')->group(function () {
