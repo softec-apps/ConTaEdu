@@ -14,7 +14,7 @@
 
                         <div class="row g-3 mb-4 align-items-center justify-content-between">
                             <div class="col-auto">
-                                <h1 class="app-page-title mb-0">Administracion de Usuarios</h1>
+                                <h1 class="app-page-title mb-0">Administración de Usuarios</h1>
                             </div>
                         </div>
 
@@ -31,7 +31,6 @@
                                             <option value="3">Estudiante</option>
                                         </select>
                                        </div>
-                                        
 
                                         <table id="usersTable" class="table table-striped table-bordered"
                                             style="width:100%">
@@ -106,8 +105,13 @@
                                 data: null,
                                 title: "Acciones",
                                 render: function(data, type, row) {
-                                    return '<button type="button" class="btn btn-outline-warning btnEditar" data-id="' +
-                                        row.id + '"><i class="fa-solid fa-pen-to-square"></i></button>';
+                                    return '
+                                        <button class="btn btn-danger btn-delete" data-id="${row.id}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning btnEditar" data-id="' +
+                                        row.id + '"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    ';
                                 }
                             }
                         ],

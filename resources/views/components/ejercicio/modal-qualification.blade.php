@@ -35,7 +35,7 @@
               @endforeach
             </tbody>
           </table> --}}
-          <table class="table">
+          <table class="table table-bordered w-100" id="qualificationTable">
             <thead>
               <tr>
                 <th>Estudiante</th>
@@ -80,3 +80,21 @@
     </div>
   </div>
 </div>
+
+@push('scripts')
+  <script>
+    $(document).ready(function() {
+      let miTabla = $('#qualificationTable').DataTable(setDataTableConfig({
+                        processing: false,
+                        serverSide: false,
+                    },
+                    [{
+                        text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
+                        className: 'btn bg-success text-white',
+                        action: function() {
+                            $('#miModal').modal('show');
+                        }
+                    }]));
+    })
+  </script>
+@endpush

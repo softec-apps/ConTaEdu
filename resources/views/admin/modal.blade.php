@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
 
-                <div class="app-card app-card-settings shadow-sm p-4">
+                <div class="app-card app-card-settings p-4">
                     <div class="app-card-body">
                         <form id="settings-form" class="settings-form">
                             @csrf
@@ -70,7 +70,6 @@
                                         form.appendChild(hiddenMethodField);
                                     }
                                     form.submit();
-                                    
                                 } else {
                                     alert('Por favor complete todos los campos antes de enviar el formulario.');
                                 }
@@ -83,7 +82,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

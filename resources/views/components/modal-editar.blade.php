@@ -26,7 +26,7 @@
               rows="5" cols="30" style="width: 100%; height: 100%;">{{ $desc }}</textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary">actualizar</button>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
         </form>
       </div>
     </div>

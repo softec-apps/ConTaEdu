@@ -67,7 +67,7 @@
               <x-dashboard-stat stat="Estudiantes Asignados" :value="App\Models\Assignment::getRelatedStudentCountForTeacher(
                   auth()->user()->id,
               )"
-                :route="route('exercise.index')" />
+                :route="route('student.index')" />
 
             </div>
 

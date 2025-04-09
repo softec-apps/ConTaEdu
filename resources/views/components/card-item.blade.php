@@ -54,9 +54,14 @@
 
             @if ($graded)
               <li><span class="text-muted">Calificación:</span>
-                {!! isset($exercise->asignaciones->grade)
+                @if ($exercise->asignaciones->grade != null)
+                <span class="badge bg-info">{{ $exercise->asignaciones->grade . ' / 10' }}</span>
+                @else
+                <span class="badge bg-danger">Pendiente</span>
+                @endif
+                <!-- {!! isset($exercise->asignaciones->grade)
                     ? $exercise->asignaciones->grade . ' / 10'
-                    : '<span class="badge bg-danger">Pendiente</span>' !!}</li>
+                    : '<span class="badge bg-danger">Pendiente</span>' !!}</li> -->
             @endif
           @endif
         </ul>
@@ -197,9 +202,9 @@
 
 <!-- Incluir el componente del modal -->
 <x-ejercicio.modal-code id="codeModal{{ $exercise->id }}"
-  title="Código de Acceso" :content="$exercise->access_code ?? 'No hay codigo disponible'" />
+  title="Código de Acceso" :content="$exercise->access_code ?? 'No hay código disponible'" />
 
-<!-- Incluir el componente para registrar la calificacion-->
+<!-- Incluir el componente para registrar la calificación-->
 <x-ejercicio.modal-qualification :exercise-id="$exercise->id" />
 
 <script>

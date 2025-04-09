@@ -65,7 +65,10 @@
               data: 'email'
             },
             {
-              data: 'created_at'
+              data: 'created_at',
+              render: function(data, type, row) {
+                return new Date(data).toLocaleString();
+              }
             },
             {
               data: null,

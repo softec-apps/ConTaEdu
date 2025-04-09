@@ -47,6 +47,9 @@
 
             <div class="row g-4">
               @foreach ($exercises as $exercise)
+                <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                  data-bs-target="#qualificationModal{{ $exercise->id }}"
+                  data-access-code="{{ $exercise->access_code ?? 'error al obtener el código' }}">
                 @component('components.card-item', [
                     'title' => $exercise->titulo,
                     'autor' => $exercise->autor,
@@ -60,6 +63,7 @@
                     'graded' => true,
                 ])
                 @endcomponent
+                </a>
               @endforeach
 
               <nav class="app-pagination mt-5">

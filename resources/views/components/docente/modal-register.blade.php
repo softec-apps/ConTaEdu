@@ -24,7 +24,7 @@
           <div class="mb-3">
             <label for="ci" class="form-label">Número de cédula</label>
             <input type="text" class="form-control" id="ci"
-              name="ci" required>
+              name="ci" minlength="10" maxlength="10" required>
           </div>
           <div class="mb-3">
             <label for="name" class="form-label">Nombre y Apellido</label>

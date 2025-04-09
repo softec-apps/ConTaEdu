@@ -8,11 +8,14 @@
 /* @import 'bootstrap/dist/css/bootstrap.min.css'; */
 
 .dt-search {
-    display: flex;
+    /* display: flex; */
     align-items: center;
+    width: 100%;
+    padding-right: 1em;
 }
 .dt-search input {
     border: 1px solid var(--bs-secondary);
+    width: 100%;
 }
 .dt-paging {
     display: flex;

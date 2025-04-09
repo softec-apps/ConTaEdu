@@ -31,7 +31,7 @@ class Exercise extends Model
 
     public static function getByCode($code)
     {
-        return self::where('access_code', $code)->firstOrFail();
+        return self::with('user')->where('access_code', $code)->firstOrFail();
     }
 
     // Internal method to get the user's assignments

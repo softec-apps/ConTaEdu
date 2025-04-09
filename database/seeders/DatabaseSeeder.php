@@ -8,7 +8,6 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-   
     public function run(): void
     {
         // User::factory(10)->create();
@@ -18,15 +17,6 @@ class DatabaseSeeder extends Seeder
                 'ci' => '0000000000',
                 'name' => 'Admin User',
                 'email' => 'admin@example.com',
-                'role' => 1
-            ]
-        );
-
-        User::factory()->create(
-            [
-                'ci' => '0202433918',
-                'name' => 'Admin User',
-                'email' => 'paulluna99@gmail.com',
                 'role' => 1
             ]
         );

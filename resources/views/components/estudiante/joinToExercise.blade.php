@@ -92,6 +92,7 @@
                 $(modal2).find('#access-code').val(response.data.access_code);
                 $(modal2).find('#exercise-id').val(response.data.id);
                 $(modal2).find('#exerciseName').text(response.data.name);
+                $(modal2).find('#exerciseTeacher').text(response.data.user.name);
                 $(modal2).find('#exerciseAccessCode').text(response.data.access_code);
                 $(modal2).find('#exerciseDescription').text(response.data.desc);
             } else {

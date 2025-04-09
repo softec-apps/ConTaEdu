@@ -38,7 +38,8 @@ function setDataTableConfig(options = {}, customButtons = []) {
         responsive: true,
         autoWidth: true,
         searching: true,
-        dom: `<"row my-3"<"col-sm-4 col-lg-3"l><"col-sm-8 col-lg-4"f><"col-sm-12 col-lg-5"B>>rtp`,
+        // dom: `<"row my-3"<"col-sm-4 col-lg-3"l><"col-sm-8 col-lg-4"f><"col-sm-12 col-lg-5"B>>rtp`,
+        dom: '<"row my-3"<"col-sm-4 col-lg-3"l><"col-sm-8 col-lg-9 d-flex align-items-start"f><"col-sm-12 col-lg-12 d-flex justify-content-start"B>>rt<"row my-2"<"col-sm-6"i><"col-sm-6 d-flex justify-content-end"p>>',
         buttons: [
             {
                 extend: 'copy',
