@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="qualificationModalLabel{{ $exercise->id }}">
-          Calificar Ejercicio: {{ $exercise->title }}</h5>
+          Calificar Ejercicio: {{ $exercise->titulo }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"
           aria-label="Close"></button>
       </div>
@@ -35,7 +35,7 @@
               @endforeach
             </tbody>
           </table> --}}
-          <table class="table table-bordered w-100" id="qualificationTable">
+          <table class="table table-bordered w-100" id="qualificationTable{{ $exercise->id }}">
             <thead>
               <tr>
                 <th>Estudiante</th>
@@ -84,17 +84,10 @@
 @push('scripts')
   <script>
     $(document).ready(function() {
-      let miTabla = $('#qualificationTable').DataTable(setDataTableConfig({
-                        processing: false,
-                        serverSide: false,
-                    },
-                    [{
-                        text: '<i class="fa-solid fa-circle-plus"></i> Agregar',
-                        className: 'btn bg-success text-white',
-                        action: function() {
-                            $('#miModal').modal('show');
-                        }
-                    }]));
-    })
+      let miTabla = $('#qualificationTable{{ $exercise->id }}').DataTable(setDataTableConfig({
+        processing: false,
+        serverSide: false,
+      }));
+    });
   </script>
 @endpush

@@ -3,9 +3,10 @@
     'graded' => false,
     'role' => 3, // Estudiante por defecto
     'exercise' => null, // Aseguramos que la variable $exercise esté definida
+    'grid' => true,
 ])
 
-<div class="col-6 col-md-4 col-xl-4 col-xxl-3">
+<div @if($grid) class="col-6 col-md-4 col-xl-4 col-xxl-3" @endif>
   <div class="app-card app-card-doc shadow-sm h-100">
     <div class="app-card-thumb-holder p-3">
       <span class="icon-holder text-info">

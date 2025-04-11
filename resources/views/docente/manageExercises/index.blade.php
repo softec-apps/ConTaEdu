@@ -47,6 +47,7 @@
 
             <div class="row g-4">
               @foreach ($exercises as $exercise)
+              <div class="col-6 col-md-4 col-xl-4 col-xxl-3">
                 <a class="dropdown-item" href="#" data-bs-toggle="modal"
                   data-bs-target="#qualificationModal{{ $exercise->id }}"
                   data-access-code="{{ $exercise->access_code ?? 'error al obtener el código' }}">
@@ -61,9 +62,11 @@
                     'exercise' => $exercise,
                     'viewed' => true,
                     'graded' => true,
+                    'grid' => false
                 ])
                 @endcomponent
                 </a>
+              </div>
               @endforeach
 
               <nav class="app-pagination mt-5">
