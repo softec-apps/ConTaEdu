@@ -45,18 +45,35 @@ class ManagetStudentController extends Controller
      */
     public function store(ManageStudentRequest $request)
     {
-        $student = new User();
-        $student->ci = $request->ci;
-        $student->name = $request->name;
-        $student->email = $request->email;
-        $student->password = Hash::make($request->ci);
-        $student->role = 3;
+        try {
+            $validator = \Validator::make($request->all(), ([
+                'ci' => 'required|numeric|min_digits:10|max_digits:10|unique:users,ci',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email',
+            ]
+            ));
 
-        $student->save();
+            if ($validator->fails()) {
+                swal()->error('Error', 'El estudiante ya existe')->toast();
+                return back()->withErrors($validator)->withInput();
+            }
 
-        swal()->success('Éxito', 'Estudiante registrado correctamente')->toast();
+            $student = new User();
+            $student->ci = $request->ci;
+            $student->name = $request->name;
+            $student->email = $request->email;
+            $student->password = Hash::make($request->ci);
+            $student->role = 3;
 
-        return view('docente.manageStudent.index');
+            $student->save();
+
+            swal()->success('Éxito', 'Estudiante registrado correctamente')->toast();
+
+            return view('docente.manageStudent.index');
+        }catch (\Exception $e) {
+            swal()->error('Error', 'No se pudo registrar el estudiante: ' . $e->getMessage())->toast();
+            return back()->withErrors(['message' => 'Error al registrar el estudiante: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -82,25 +99,40 @@ class ManagetStudentController extends Controller
      */
     public function edit($id)
     {
-        $user = User::getUsersById($id);
-        return view('docente.manageStudent.edit', ['user' => $user, 'id' => $id]);
+        try {
+            $user = User::getUsersById($id);
+            return view('docente.manageStudent.edit', ['user' => $user, 'id' => $id]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Error al editar el estudiante: ' . $e->getMessage()]);
+        }
     }
     /**
      * Update the specified resource in storage.
      */
     public function update(ManageStudentRequest $request, $id)
     {
-        $user = User::find($id);
+        try {
+            $user = User::find($id);
 
-        if ($user) {
-            $user->fill($request->validated());
-            $user->save();
-            swal()->success('Actualización exitosa', 'La información del estudiante ha sido actualizada')->toast();
-        } else {
-            swal()->error('Error', 'No se encontró el estudiante')->toast();
+            if ($user) {
+                $request->validate([
+                    'ci' => 'required|numeric|min_digits:10|max_digits:10|unique:users,ci,' . $id,
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|email|max:255|unique:users,email,' . $id,
+                ]);
+
+                $user->fill($request->validated());
+                $user->save();
+                swal()->success('Actualización exitosa', 'La información del estudiante ha sido actualizada')->toast();
+            } else {
+                swal()->error('Error', 'No se encontró el estudiante')->toast();
+            }
+
+            return redirect()->route('student.index');
+        } catch (\Exception $e) {
+            swal()->error('Error', 'No se pudo actualizar el estudiante: ' . $e->getMessage())->toast();
+            return back()->withErrors(['message' => 'Error al actualizar el estudiante: ' . $e->getMessage()]);
         }
-
-        return redirect()->route('student.index');
     }
 
     /**
@@ -108,9 +140,13 @@ class ManagetStudentController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::getUsersById($id);
-        $user->delete();
-        return response()->json(['success' => true]);
+        try {
+            $user = User::getUsersById($id);
+            $user->delete();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar el estudiante: ' . $e->getMessage()]);
+        }
     }
 
     public function getProgressChartData(Request $request)
@@ -152,18 +188,22 @@ class ManagetStudentController extends Controller
 
     public function changePassword(Request $request, $id)
     {
-        $request->validate([
-            'new_password' => 'required|string|min:8|confirmed',
-        ]);
+        try {
+            $request->validate([
+                'new_password' => 'required|string|min:8|confirmed',
+            ]);
 
-        $user = User::find($id);
+            $user = User::find($id);
 
-        if ($user) {
-            $user->password = Hash::make($request->new_password);
-            $user->save();
-            return response()->json(['success' => true, 'message' => 'La contraseña del estudiante ha sido actualizada']);
+            if ($user) {
+                $user->password = Hash::make($request->new_password);
+                $user->save();
+                return response()->json(['success' => true, 'message' => 'La contraseña del estudiante ha sido actualizada']);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al cambiar la contraseña: ' . $e->getMessage()]);
         }
-
-        return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
     }
 }

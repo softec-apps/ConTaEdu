@@ -22,14 +22,14 @@
                 value="{{ $template->id }}">
 
               <div class="mb-3">
-                <label for="setting-input-2" class="form-label">Cuenta</label>
-                <input type="text" class="form-control" id="cuenta"
+                <label for="setting-input-2" class="form-label">Número de cuenta</label>
+                <input type="number" class="form-control" id="cuenta"
                   name="cuenta" placeholder="Escriba..."
                   value="{{ old('cuenta') }}" required>
               </div>
               <div class="mb-3">
                 <label for="setting-input-2"
-                  class="form-label">Descripcion</label>
+                  class="form-label">Descripción</label>
                 <input type="text" class="form-control" id="description"
                   name="description" placeholder="Escriba..."
                   value="{{ old('description') }}" required>

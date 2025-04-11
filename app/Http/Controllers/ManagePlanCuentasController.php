@@ -69,23 +69,28 @@ class ManagePlanCuentasController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'cuenta' => 'required',
-            'description' => 'required',
-            'tipocuenta' => 'required',
-            'tipoestado' => 'required',
-            'signo' => 'required',
-            'template_id' => 'required|exists:templates,id'
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'cuenta' => 'required|numeric',
+                'description' => 'required|string',
+                'tipocuenta' => 'required|in:T,D',
+                'tipoestado' => 'required|in:1,2,3,5',
+                'signo' => 'required|in:P,N,D',
+                'template_id' => 'required|exists:templates,id'
+            ]);
 
-        if (!$validatedData) {
-            return back()->withErrors(['message' => 'model not found']);
+            if (!$validatedData) {
+                return back()->withErrors(['message' => 'model not found']);
+            }
+
+            PlanCuentas::create($validatedData);
+            swal()->success('Cuenta creada', 'Cuenta creada exitosamente.')->toast();
+
+            return redirect()->route('template.accounts', $request->template_id);
+        } catch (\Exception $e) {
+            swal()->error('Error', 'No se pudo crear la cuenta: ' . $e->getMessage())->toast();
+            return back()->withErrors(['message' => 'Error al crear la cuenta: ' . $e->getMessage()]);
         }
-
-        PlanCuentas::create($validatedData);
-        swal()->success('Cuenta creada', 'Cuenta creada exitosamente.')->toast();
-
-        return redirect()->route('template.accounts', $request->template_id);
     }
 
 
@@ -110,21 +115,26 @@ class ManagePlanCuentasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'cuenta' => 'required',
-            'description' => 'required',
-            'tipocuenta' => 'required',
-            'signo' => 'required',
-            'tipoestado' => 'required',
-            'template_id' => 'required|exists:templates,id'
-        ]);
-        $model = PlanCuentas::find($id);
-        if ($model) {
-            $model->update($validatedData);
-            swal()->success('Cuenta actualizada', 'La cuenta se ha actualizado correctamente')->toast();
-            return redirect()->route('template.accounts', $request->template_id);
-        } else {
-            return back()->withErrors(['message' => 'model not found']);
+        try {
+            $validatedData = $request->validate([
+                'cuenta' => 'required|numeric',
+                'description' => 'required|string',
+                'tipocuenta' => 'required|in:T,D',
+                'tipoestado' => 'required|in:1,2,3,5',
+                'signo' => 'required|in:P,N,D',
+                'template_id' => 'required|exists:templates,id'
+            ]);
+            $model = PlanCuentas::find($id);
+            if ($model) {
+                $model->update($validatedData);
+                swal()->success('Cuenta actualizada', 'La cuenta se ha actualizado correctamente')->toast();
+                return redirect()->route('template.accounts', $request->template_id);
+            } else {
+                return back()->withErrors(['message' => 'model not found']);
+            }
+        } catch (\Exception $e) {
+            swal()->error('Error', 'No se pudo actualizar la cuenta: ' . $e->getMessage())->toast();
+            return back()->withErrors(['message' => 'Error al actualizar la cuenta: ' . $e->getMessage()]);
         }
     }
 
@@ -133,27 +143,35 @@ class ManagePlanCuentasController extends Controller
      */
     public function estado($id)
     {
-        $model = PlanCuentas::find($id);
-        if ($model) {
-            $model->est = $model->est == 1 ? 0 : 1;
-            $model->save();
-            return response()->json(['success', true]);
-        } else {
-            return response()->json(['success', false]);
-            //return back()->withErrors(['message' => 'model not found']);
+        try {
+            $model = PlanCuentas::find($id);
+            if ($model) {
+                $model->est = $model->est == 1 ? 0 : 1;
+                $model->save();
+                return response()->json(['success', true]);
+            } else {
+                return response()->json(['success', false]);
+                //return back()->withErrors(['message' => 'model not found']);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al cambiar el estado: ' . $e->getMessage()]);
         }
     }
 
 
     public function destroy($id)
     {
-        $model = PlanCuentas::find($id);
-        if ($model) {
-            $model->est = 1 ? $model->est = 0 : $model->est = 1;
-            $model->update($model);
-            return redirect()->route('docente.cuentas.index');
-        } else {
-            return back()->withErrors(['message' => 'model not found']);
+        try {
+            $model = PlanCuentas::find($id);
+            if ($model) {
+                $model->est = 1 ? $model->est = 0 : $model->est = 1;
+                $model->update($model);
+                return redirect()->route('docente.cuentas.index');
+            } else {
+                return back()->withErrors(['message' => 'model not found']);
+            }
+        } catch (\Exception $e) {
+            return back()->withErrors(['message' => 'Error al eliminar la cuenta: ' . $e->getMessage()]);
         }
     }
 
